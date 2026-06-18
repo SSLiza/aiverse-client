@@ -4,15 +4,18 @@ import Link from "next/link";
 import { useState } from "react";
 import { Bars, Xmark } from "@gravity-ui/icons";
 import { usePathname } from "next/navigation";
+import ThemeToggle from "./Themetogglebutton";
+import { authClient } from "@/lib/auth-client";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-
     const pathname = usePathname();
+
+    const { data: session, isPending } = authClient.useSession();
 
     const navLinks = [
         { name: "Home", href: "/" },
-        { name: "All Prompts", href: "/prompts" },
+        { name: "All Prompts", href: "/all-prompts" },
         { name: "Dashboard", href: "/dashboard" },
     ];
 
@@ -21,10 +24,14 @@ export default function Navbar() {
         return pathname.startsWith(href);
     };
 
+    const handleLogout = async () => {
+        await authClient.signOut();
+    };
+
     return (
         <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 lg:px-8">
-
+                
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 text-white font-bold">
@@ -42,31 +49,49 @@ export default function Navbar() {
                         <Link
                             key={link.name}
                             href={link.href}
-                            className={`pb-1 border-b-2 transition ${isActive(link.href)
+                            className={`pb-1 border-b-2 transition ${
+                                isActive(link.href)
                                     ? "border-violet-500 text-violet-500"
                                     : "border-transparent text-slate-300 hover:text-white"
-                                }`}
+                            }`}
                         >
                             {link.name}
                         </Link>
                     ))}
                 </nav>
 
-                {/* Auth Buttons */}
+                {/* Desktop Auth */}
                 <div className="hidden items-center gap-3 md:flex">
-                    <Link
-                        href="/login"
-                        className="rounded-lg border border-slate-700 px-4 py-2 text-slate-300 transition hover:bg-slate-800"
-                    >
-                        Login
-                    </Link>
+                    {!isPending && (
+                        <>
+                            {session ? (
+                                <button
+                                    onClick={handleLogout}
+                                    className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
+                                >
+                                    Logout
+                                </button>
+                            ) : (
+                                <>
+                                    <Link
+                                        href="/auth/signin"
+                                        className="rounded-lg border border-slate-700 px-4 py-2 text-slate-300 transition hover:bg-slate-800"
+                                    >
+                                        Login
+                                    </Link>
 
-                    <Link
-                        href="/register"
-                        className="rounded-lg bg-violet-600 px-4 py-2 text-white transition hover:bg-violet-700"
-                    >
-                        Register
-                    </Link>
+                                    <Link
+                                        href="/auth/signup"
+                                        className="rounded-lg bg-violet-600 px-4 py-2 text-white transition hover:bg-violet-700"
+                                    >
+                                        Register
+                                    </Link>
+                                </>
+                            )}
+                        </>
+                    )}
+
+                    <ThemeToggle />
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -97,19 +122,36 @@ export default function Navbar() {
                             </Link>
                         ))}
 
-                        <Link
-                            href="/login"
-                            className="rounded-lg border border-slate-700 px-4 py-2 text-center text-slate-300"
-                        >
-                            Login
-                        </Link>
+                        {!isPending && (
+                            <>
+                                {session ? (
+                                    <button
+                                        onClick={handleLogout}
+                                        className="rounded-lg bg-red-600 px-4 py-2 text-white"
+                                    >
+                                        Logout
+                                    </button>
+                                ) : (
+                                    <>
+                                        <Link
+                                            href="/auth/signin"
+                                            className="rounded-lg border border-slate-700 px-4 py-2 text-center text-slate-300"
+                                        >
+                                            Login
+                                        </Link>
 
-                        <Link
-                            href="/register"
-                            className="rounded-lg bg-violet-600 px-4 py-2 text-center text-white"
-                        >
-                            Register
-                        </Link>
+                                        <Link
+                                            href="/auth/signup"
+                                            className="rounded-lg bg-violet-600 px-4 py-2 text-center text-white"
+                                        >
+                                            Register
+                                        </Link>
+                                    </>
+                                )}
+                            </>
+                        )}
+
+                        <ThemeToggle />
                     </div>
                 </div>
             )}
