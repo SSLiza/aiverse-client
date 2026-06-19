@@ -35,11 +35,11 @@ export default function Navbar() {
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 text-white font-bold">
-                        AI
+                        AV
                     </div>
 
                     <h1 className="text-xl font-bold text-white">
-                        Prompt<span className="text-violet-500">Hub</span>
+                        Ai<span className="text-violet-500">VERSE</span>
                     </h1>
                 </Link>
 

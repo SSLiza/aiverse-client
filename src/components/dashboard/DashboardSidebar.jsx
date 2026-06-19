@@ -27,7 +27,7 @@ export function DashboardSidebar() {
   },
   {
     icon: Bell,
-    href: "/dashboard/creator/create-prompt",
+    href: "/dashboard/creator/my-prompts/create-prompt",
     label: "Add Prompt",
   },
   {
