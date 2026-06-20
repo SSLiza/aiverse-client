@@ -12,21 +12,24 @@ import {
     TextField,
     InputGroup,
 } from "@heroui/react";
-import { 
-    Heading, 
-    FileText, 
-    Code, 
-    Tag, 
-    FolderOpen, 
-    Sparkles, 
-    UploadCloud, 
-    Globe, 
-    Lock, 
+import {
+    Heading,
+    FileText,
+    Code,
+    Tag,
+    FolderOpen,
+    Sparkles,
+    UploadCloud,
+    Globe,
+    Lock,
     Send,
     Gauge,
     Trophy,
     Flame
 } from "lucide-react";
+import { createPrompt } from "@/lib/actions/prompts";
+import { toast } from "react-toastify";
+import { useSession } from "@/lib/auth-client";
 
 const categories = [
     "Writing",
@@ -47,7 +50,17 @@ const aiTools = [
     "Perplexity",
 ];
 
+const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
+};
+
 export default function CreatePromptPage() {
+    const { data: session } = useSession();
     const [difficulty, setDifficulty] = useState("");
     const [visibility, setVisibility] = useState("");
     const [thumbnail, setThumbnail] = useState(null);
@@ -68,17 +81,37 @@ export default function CreatePromptPage() {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
+        const title = formData.get("title");
+        const description = formData.get("description");
+        const content = formData.get("content");
+        const category = formData.get("category");
+        const aiTool = formData.get("aiTool");
+
+        if (!title || !description || !content || !category || !aiTool || !difficulty || !visibility) {
+            toast.error("Please fill in all required fields.");
+            return;
+        }
+
+        let thumbnailUrl = "";
+        const thumbnailFile = formData.get("thumbnail");
+        if (thumbnailFile && thumbnailFile.size > 0) {
+            try {
+                thumbnailUrl = await fileToBase64(thumbnailFile);
+            } catch (err) {
+                console.error("Error converting image:", err);
+            }
+        }
 
         const promptData = {
-            title: formData.get("title"),
-            description: formData.get("description"),
-            content: formData.get("content"),
-            category: formData.get("category"),
-            aiTool: formData.get("aiTool"),
+            title,
+            description,
+            content,
+            category,
+            aiTool,
             tags: formData
                 .get("tags")
                 ?.split(",")
@@ -88,14 +121,38 @@ export default function CreatePromptPage() {
             difficulty,
             visibility,
 
-            thumbnail: formData.get("thumbnail"),
+            thumbnail: thumbnailUrl,
+
+            creatorId: session?.user?.id,
+            creatorEmail: session?.user?.email,
+            creatorName: session?.user?.name,
 
             copyCount: 0,
             status: "pending",
             createdAt: new Date(),
         };
 
-        console.log(promptData);
+        console.log("Submitting prompt data:", promptData);
+        if (session) {
+            console.log('User session:', session);
+        }
+
+        try {
+            const res = await createPrompt(promptData);
+            if (res.insertedId) {
+                toast.success("Prompt created successfully");
+                e.target.reset();
+                setThumbnail(null);
+                setThumbnailPreview(null);
+                setDifficulty("");
+                setVisibility("");
+            } else {
+                toast.error("Failed to create prompt");
+            }
+        } catch (error) {
+            console.error("Submission error:", error);
+            toast.error(error.message || "Failed to create prompt");
+        }
     };
 
     return (
@@ -125,16 +182,16 @@ export default function CreatePromptPage() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-                    
+
                     {/* Prompt Title */}
                     <TextField name="title" className="flex flex-col gap-2">
                         <Label className="text-sm font-semibold text-zinc-300">Prompt Title</Label>
                         <InputGroup className="flex items-center gap-2.5 border border-zinc-800 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 rounded-xl px-3.5 py-1 bg-zinc-900/30 transition-all duration-200">
                             <Heading className="text-zinc-500 flex-shrink-0" size={18} />
-                            <Input 
+                            <Input
                                 type="text"
-                                placeholder="e.g. SEO Blog Post Writer or React Expert" 
-                                className="w-full bg-transparent py-2.5 text-sm outline-none border-none text-zinc-100 placeholder-zinc-600" 
+                                placeholder="e.g. SEO Blog Post Writer or React Expert"
+                                className="w-full bg-transparent py-2.5 text-sm outline-none border-none text-zinc-100 placeholder-zinc-600"
                             />
                         </InputGroup>
                     </TextField>
@@ -144,10 +201,10 @@ export default function CreatePromptPage() {
                         <Label className="text-sm font-semibold text-zinc-300">Prompt Description</Label>
                         <InputGroup className="flex items-start gap-2.5 border border-zinc-800 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 rounded-xl px-3.5 py-3 bg-zinc-900/30 transition-all duration-200">
                             <FileText className="text-zinc-500 mt-0.5 flex-shrink-0" size={18} />
-                            <TextArea 
-                                placeholder="Provide a summary of what this prompt does and its target audience..." 
-                                className="w-full bg-transparent text-sm outline-none border-none text-zinc-100 placeholder-zinc-600 min-h-[70px] resize-y" 
-                                rows={3} 
+                            <TextArea
+                                placeholder="Provide a summary of what this prompt does and its target audience..."
+                                className="w-full bg-transparent text-sm outline-none border-none text-zinc-100 placeholder-zinc-600 min-h-[70px] resize-y"
+                                rows={3}
                             />
                         </InputGroup>
                     </TextField>
@@ -170,10 +227,10 @@ export default function CreatePromptPage() {
                             </div>
                             <div className="flex items-start gap-2.5 p-3.5 font-mono">
                                 <Code className="text-zinc-600 mt-1 flex-shrink-0" size={16} />
-                                <TextArea 
-                                    placeholder="Act as a professional software engineer... [insert instructions]" 
-                                    className="w-full bg-transparent text-sm outline-none border-none text-zinc-200 placeholder-zinc-700 min-h-[160px] font-mono leading-relaxed resize-y" 
-                                    rows={8} 
+                                <TextArea
+                                    placeholder="Act as a professional software engineer... [insert instructions]"
+                                    className="w-full bg-transparent text-sm outline-none border-none text-zinc-200 placeholder-zinc-700 min-h-[160px] font-mono leading-relaxed resize-y"
+                                    rows={8}
                                 />
                             </div>
                         </div>
@@ -233,10 +290,10 @@ export default function CreatePromptPage() {
                         <Label className="text-sm font-semibold text-zinc-300">Tags</Label>
                         <InputGroup className="flex items-center gap-2.5 border border-zinc-800 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 rounded-xl px-3.5 py-1 bg-zinc-900/30 transition-all duration-200">
                             <Tag className="text-zinc-500 flex-shrink-0" size={18} />
-                            <Input 
+                            <Input
                                 type="text"
-                                placeholder="react, nextjs, seo, marketing (comma separated)" 
-                                className="w-full bg-transparent py-2.5 text-sm outline-none border-none text-zinc-100 placeholder-zinc-600" 
+                                placeholder="react, nextjs, seo, marketing (comma separated)"
+                                className="w-full bg-transparent py-2.5 text-sm outline-none border-none text-zinc-100 placeholder-zinc-600"
                             />
                         </InputGroup>
                     </TextField>
@@ -255,13 +312,12 @@ export default function CreatePromptPage() {
 
                         <div className="grid md:grid-cols-3 gap-4 mt-1">
                             {/* Beginner card */}
-                            <Radio 
-                                value="Beginner" 
-                                className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                                    difficulty === "Beginner"
+                            <Radio
+                                value="Beginner"
+                                className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all duration-200 ${difficulty === "Beginner"
                                     ? "border-emerald-500 bg-emerald-500/5 ring-1 ring-emerald-500/50"
                                     : "border-zinc-800 bg-zinc-900/20 hover:border-zinc-700 hover:bg-zinc-900/40"
-                                }`}
+                                    }`}
                             >
                                 <Radio.Control className="hidden" />
                                 <Radio.Content className="flex items-center gap-3 w-full">
@@ -276,13 +332,12 @@ export default function CreatePromptPage() {
                             </Radio>
 
                             {/* Intermediate card */}
-                            <Radio 
-                                value="Intermediate" 
-                                className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                                    difficulty === "Intermediate"
+                            <Radio
+                                value="Intermediate"
+                                className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all duration-200 ${difficulty === "Intermediate"
                                     ? "border-amber-500 bg-amber-500/5 ring-1 ring-amber-500/50"
                                     : "border-zinc-800 bg-zinc-900/20 hover:border-zinc-700 hover:bg-zinc-900/40"
-                                }`}
+                                    }`}
                             >
                                 <Radio.Control className="hidden" />
                                 <Radio.Content className="flex items-center gap-3 w-full">
@@ -297,13 +352,12 @@ export default function CreatePromptPage() {
                             </Radio>
 
                             {/* Pro card */}
-                            <Radio 
-                                value="Pro" 
-                                className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                                    difficulty === "Pro"
+                            <Radio
+                                value="Pro"
+                                className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all duration-200 ${difficulty === "Pro"
                                     ? "border-rose-500 bg-rose-500/5 ring-1 ring-rose-500/50"
                                     : "border-zinc-800 bg-zinc-900/20 hover:border-zinc-700 hover:bg-zinc-900/40"
-                                }`}
+                                    }`}
                             >
                                 <Radio.Control className="hidden" />
                                 <Radio.Content className="flex items-center gap-3 w-full">
@@ -325,16 +379,16 @@ export default function CreatePromptPage() {
                         <div className="relative border border-dashed border-zinc-800 rounded-2xl bg-zinc-900/10 transition-all duration-200 overflow-hidden min-h-[160px] flex items-center justify-center">
                             {thumbnailPreview ? (
                                 <div className="relative w-full h-[220px] group/preview">
-                                    <img 
-                                        src={thumbnailPreview} 
-                                        alt="Thumbnail Preview" 
+                                    <img
+                                        src={thumbnailPreview}
+                                        alt="Thumbnail Preview"
                                         className="w-full h-full object-cover"
                                     />
                                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/preview:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3">
                                         <label htmlFor="thumbnail-input" className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold cursor-pointer transition-all">
                                             Change Image
                                         </label>
-                                        <button 
+                                        <button
                                             type="button"
                                             onClick={() => {
                                                 setThumbnail(null);
@@ -388,13 +442,12 @@ export default function CreatePromptPage() {
 
                         <div className="grid md:grid-cols-2 gap-4 mt-1">
                             {/* Public visibility card */}
-                            <Radio 
-                                value="Public" 
-                                className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                                    visibility === "Public"
+                            <Radio
+                                value="Public"
+                                className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all duration-200 ${visibility === "Public"
                                     ? "border-violet-500 bg-violet-500/5 ring-1 ring-violet-500/50"
                                     : "border-zinc-800 bg-zinc-900/20 hover:border-zinc-700 hover:bg-zinc-900/40"
-                                }`}
+                                    }`}
                             >
                                 <Radio.Control className="hidden" />
                                 <Radio.Content className="flex items-center gap-3 w-full">
@@ -409,13 +462,12 @@ export default function CreatePromptPage() {
                             </Radio>
 
                             {/* Private visibility card */}
-                            <Radio 
-                                value="Private" 
-                                className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                                    visibility === "Private"
+                            <Radio
+                                value="Private"
+                                className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all duration-200 ${visibility === "Private"
                                     ? "border-violet-500 bg-violet-500/5 ring-1 ring-violet-500/50"
                                     : "border-zinc-800 bg-zinc-900/20 hover:border-zinc-700 hover:bg-zinc-900/40"
-                                }`}
+                                    }`}
                             >
                                 <Radio.Control className="hidden" />
                                 <Radio.Content className="flex items-center gap-3 w-full">
@@ -433,16 +485,16 @@ export default function CreatePromptPage() {
 
                     {/* Reset & Submit Buttons */}
                     <div className="flex justify-end gap-4 pt-6 border-t border-zinc-900">
-                        <Button 
-                            variant="bordered" 
+                        <Button
+                            variant="bordered"
                             type="reset"
                             className="border-zinc-850 text-zinc-400 hover:bg-zinc-900/50 hover:text-zinc-200 font-medium px-6 py-2.5 rounded-xl transition-all duration-200"
                         >
                             Reset Form
                         </Button>
 
-                        <Button 
-                            color="primary" 
+                        <Button
+                            color="primary"
                             type="submit"
                             className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold px-6 py-2.5 rounded-xl shadow-lg shadow-violet-600/10 hover:shadow-violet-600/20 transition-all duration-200 flex items-center gap-2"
                         >

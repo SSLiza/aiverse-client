@@ -1,4 +1,6 @@
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function DashboardLayout({
   children,
@@ -9,6 +11,7 @@ export default function DashboardLayout({
       <main className="flex-1 p-6">
         {children}
       </main>
+      <ToastContainer />
     </div>
   );
 }
