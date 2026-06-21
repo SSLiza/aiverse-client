@@ -42,7 +42,7 @@ const PromtCard = ({ prompt }) => {
           </div>
 
           <Link
-            href={`/prompts/${prompt._id}`}
+            href={`/all-prompts/${prompt._id}`}
             className="rounded-xl bg-violet-600 px-4 py-2 text-white"
           >
             Details

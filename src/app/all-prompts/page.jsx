@@ -1,98 +1,131 @@
-import PromtCard from '@/components/PromtCard';
-import React from 'react';
+"use client";
 
-const mockPrompts = [
-    {
-        _id: "1",
-        title: "SEO Blog Generator",
-        description: "Write high-ranking SEO-optimized blog posts easily with this prompt.",
-        category: "Writing",
-        aiTool: "ChatGPT",
-        creatorName: "John Doe",
-        copyCount: 150,
-        thumbnail: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=500&auto=format&fit=crop&q=60"
-    },
-    {
-        _id: "2",
-        title: "React Specialist",
-        description: "Debug, optimize, and generate React components following clean code practices.",
-        category: "Coding",
-        aiTool: "Claude",
-        creatorName: "Jane Smith",
-        copyCount: 95,
-        thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500&auto=format&fit=crop&q=60"
-    },
-    {
-        _id: "3",
-        title: "Midjourney Photorealistic Prompt",
-        description: "Generate breathtaking, realistic photos of landscapes and nature.",
-        category: "Design",
-        aiTool: "Midjourney",
-        creatorName: "Alice Webb",
-        copyCount: 312,
-        thumbnail: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500&auto=format&fit=crop&q=60"
-    }
-];
+import { useEffect, useState } from "react";
+import PromtCard from "@/components/PromtCard";
 
 const AllPromtPage = () => {
-    return (
-        <section className="mx-auto max-w-7xl px-4 py-10">
-            <div className="mb-10 text-center">
-                <h1 className="text-4xl font-bold">
-                    Explore AI Prompts
-                </h1>
+  const [prompts, setPrompts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-                <p className="mt-3 text-slate-600 dark:text-slate-400">
-                    Discover prompts for ChatGPT, Gemini, Claude and more.
-                </p>
-            </div>
+  const [filters, setFilters] = useState({
+    search: "",
+    category: "",
+    aiTool: "",
+    difficulty: "",
+    sort: "",
+  });
 
-            {/* Search & Filters */}
-            <div className="mb-8 rounded-2xl border p-4">
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-                    <input
-                        type="text"
-                        placeholder="Search prompts..."
-                        className="input input-bordered w-full"
-                    />
+  useEffect(() => {
+    const fetchPrompts = async () => {
+      try {
+        setLoading(true);
 
-                    <select className="select select-bordered">
-                        <option>All Categories</option>
-                        <option>Marketing</option>
-                        <option>Coding</option>
-                        <option>Business</option>
-                    </select>
+        const query = new URLSearchParams(filters).toString();
 
-                    <select className="select select-bordered">
-                        <option>All AI Tools</option>
-                        <option>ChatGPT</option>
-                        <option>Gemini</option>
-                        <option>Claude</option>
-                    </select>
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/prompts?${query}`
+        );
 
-                    <select className="select select-bordered">
-                        <option>Difficulty</option>
-                        <option>Beginner</option>
-                        <option>Intermediate</option>
-                        <option>Pro</option>
-                    </select>
+        const data = await res.json();
+        setPrompts(Array.isArray(data) ? data : data?.data || []);
+      } catch (err) {
+        console.error("Failed to fetch prompts:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-                    <select className="select select-bordered">
-                        <option>Latest</option>
-                        <option>Most Copied</option>
-                        <option>Most Popular</option>
-                    </select>
-                </div>
-            </div>
+    fetchPrompts();
+  }, [filters]);
 
-            {/* Prompt Grid */}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {mockPrompts.map((prompt) => (
-                    <PromtCard key={prompt._id} prompt={prompt} />
-                ))}
-            </div>
-        </section>
-    );
+  const handleChange = (key, value) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-10">
+      {/* Header */}
+      <div className="mb-10 text-center">
+        <h1 className="text-4xl font-bold">Explore AI Prompts</h1>
+        <p className="mt-3 text-slate-600 dark:text-slate-400">
+          Discover prompts for ChatGPT, Gemini, Claude and more.
+        </p>
+      </div>
+
+      {/* SEARCH & FILTERS */}
+      <div className="mb-8 rounded-2xl border p-4">
+        <div className="grid gap-4 md:grid-cols-5">
+          
+          {/* SEARCH */}
+          <input
+            type="text"
+            placeholder="Search prompts..."
+            className="input input-bordered w-full"
+            onChange={(e) => handleChange("search", e.target.value)}
+          />
+
+          {/* CATEGORY */}
+          <select
+            className="select select-bordered"
+            onChange={(e) => handleChange("category", e.target.value)}
+          >
+            <option value="">All Categories</option>
+            <option>Marketing</option>
+            <option>Coding</option>
+            <option>Business</option>
+            <option>Writing</option>
+          </select>
+
+          {/* AI TOOL */}
+          <select
+            className="select select-bordered"
+            onChange={(e) => handleChange("aiTool", e.target.value)}
+          >
+            <option value="">All AI Tools</option>
+            <option>ChatGPT</option>
+            <option>Gemini</option>
+            <option>Claude</option>
+          </select>
+
+          {/* DIFFICULTY */}
+          <select
+            className="select select-bordered"
+            onChange={(e) => handleChange("difficulty", e.target.value)}
+          >
+            <option value="">Difficulty</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+
+          {/* SORT */}
+          <select
+            className="select select-bordered"
+            onChange={(e) => handleChange("sort", e.target.value)}
+          >
+            <option value="">Latest</option>
+            <option value="mostCopied">Most Copied</option>
+            <option value="mostPopular">Most Popular</option>
+            <option value="latest">Latest</option>
+          </select>
+        </div>
+      </div>
+
+      {/* LOADING */}
+      {loading ? (
+        <div className="text-center py-10">Loading prompts...</div>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {prompts.map((prompt) => (
+            <PromtCard key={prompt._id} prompt={prompt} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
 };
 
 export default AllPromtPage;
