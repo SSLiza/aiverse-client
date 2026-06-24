@@ -1,5 +1,4 @@
-"use client";
-
+import { getUserSession } from "@/lib/core/session";
 import {
     Bars,
     Bell,
@@ -8,13 +7,18 @@ import {
     House,
     Magnifier,
     Person,
+    Star,
 } from "@gravity-ui/icons";
 
 import { Button, Drawer } from "@heroui/react";
+import {BookmarkCheck } from "lucide-react";
 import Link from "next/link";
 
-export function DashboardSidebar() {
-    const navItems = [
+export async function DashboardSidebar() {
+
+    const user =await getUserSession();
+    // console.log("user", user);
+    const CreatorSidebarLinks = [
   {
     icon: House,
     href: "/dashboard/creator",
@@ -36,6 +40,40 @@ export function DashboardSidebar() {
     label: "My Prompts",
   },
 ];
+
+const userSidebarLinks = [
+  {
+    icon: House,
+    href: "/dashboard/user",
+    label: "User Home",
+  },
+  {
+    icon: Person,
+    href: "/dashboard/user/profile",
+    label: "My Profile",
+  },
+  {
+    icon: Bell,
+    href: "/dashboard/user/add-prompt",
+    label: "Add Prompt",
+  },
+  {
+    icon: BookmarkCheck,
+    href: "/dashboard/user/saved-prompts",
+    label: "Saved Prompts",
+  },
+  {
+    icon: Star,
+    href: "/dashboard/user/my-reviews",
+    label: "My Reviews",
+  },
+];
+
+const navLinksMap ={
+    creator: CreatorSidebarLinks,
+    user: userSidebarLinks,
+}
+const navItems = navLinksMap[user?.role] || [];
     const navContent = (
         <nav className="flex flex-col gap-1">
             {navItems.map((item) => (

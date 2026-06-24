@@ -12,12 +12,26 @@ export default function Navbar() {
     const pathname = usePathname();
 
     const { data: session, isPending } = authClient.useSession();
+    const user = session?.user;
+    // console.log("session", session);
+    // console.log("user", user);
 
     const navLinks = [
         { name: "Home", href: "/" },
         { name: "All Prompts", href: "/all-prompts" },
-        { name: "Dashboard", href: "/dashboard" },
     ];
+
+   const dashboardLinks = {
+    creator: "/dashboard/creator",
+    user: "/dashboard/user",
+    admin: "/dashboard/admin",
+};
+    if (user?.email) {
+    navLinks.push({
+        name: "Dashboard",
+        href: dashboardLinks[user.role] || "/dashboard/user",
+    });
+}
 
     const isActive = (href) => {
         if (href === "/") return pathname === "/";

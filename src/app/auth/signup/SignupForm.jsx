@@ -230,27 +230,32 @@ export default function SignupForm({ redirectTo = "/" }) {
 
                     {/* role */}
 
-                    <div className="flex flex-col gap-4">
-                        <Label>Subscription plan</Label>
-                        <RadioGroup defaultValue="user" name="role" orientation="horizontal"
-                            onChange={(value) => setRole(value)}>
-                            <Radio value="user">
-                                <Radio.Control>
-                                    <Radio.Indicator />
-                                </Radio.Control>
-                                <Radio.Content>
-                                    <Label>User</Label>
-                                </Radio.Content>
-                            </Radio>
-                            <Radio value="creator">
-                                <Radio.Control>
-                                    <Radio.Indicator />
-                                </Radio.Control>
-                                <Radio.Content>
-                                    <Label>Creator</Label>
-                                </Radio.Content>
-                            </Radio>
-                        </RadioGroup>
+                    <div className="space-y-2 pt-1">
+                        <label className="text-gray-400 text-xs font-medium block">Signup As</label>
+                        <div className="flex gap-6 text-sm text-white">
+                            <label className="flex items-center gap-2 cursor-pointer select-none">
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="user"
+                                    checked={role === "user"}
+                                    onChange={() => setRole("user")}
+                                    className="accent-[#7C3AED] h-4 w-4"
+                                />
+                                Regular User
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer select-none">
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="creator"
+                                    checked={role === "creator"}
+                                    onChange={() => setRole("creator")}
+                                    className="accent-[#7C3AED] h-4 w-4"
+                                />
+                                Prompt Creator
+                            </label>
+                        </div>
                     </div>
 
                     {/* Error */}
