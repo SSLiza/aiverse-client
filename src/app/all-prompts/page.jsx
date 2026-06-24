@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import PromtCard from "@/components/PromtCard";
+import PromptCard from "@/components/PromptCard";
 
 const AllPromtPage = () => {
   const [prompts, setPrompts] = useState([]);
@@ -120,7 +120,7 @@ const AllPromtPage = () => {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {prompts.map((prompt) => (
-            <PromtCard key={prompt._id} prompt={prompt} />
+            <PromptCard key={prompt._id} prompt={prompt} />
           ))}
         </div>
       )}

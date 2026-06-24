@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-const PromtCard = ({ prompt }) => {
+const PromptCard = ({ prompt }) => {
   if (!prompt) return null;
   return (
     <div className="group overflow-hidden rounded-3xl border bg-white transition hover:-translate-y-1 hover:shadow-xl dark:bg-slate-900">
@@ -53,4 +53,4 @@ const PromtCard = ({ prompt }) => {
   );
 };
 
-export default PromtCard;
+export default PromptCard;
