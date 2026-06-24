@@ -11,69 +11,103 @@ import {
 } from "@gravity-ui/icons";
 
 import { Button, Drawer } from "@heroui/react";
-import {BookmarkCheck } from "lucide-react";
+import { BookmarkCheck, BookmarkCheckIcon } from "lucide-react";
 import Link from "next/link";
 
 export async function DashboardSidebar() {
 
-    const user =await getUserSession();
+    const user = await getUserSession();
     // console.log("user", user);
     const CreatorSidebarLinks = [
-  {
-    icon: House,
-    href: "/dashboard/creator",
-    label: "Creator Home",
-  },
-  {
-    icon: Person,
-    href: "/dashboard/creator/profile",
-    label: "My Profile",
-  },
-  {
-    icon: Bell,
-    href: "/dashboard/creator/my-prompts/create-prompt",
-    label: "Add Prompt",
-  },
-  {
-    icon: Envelope,
-    href: "/dashboard/creator/my-prompts",
-    label: "My Prompts",
-  },
-];
+        {
+            icon: House,
+            href: "/dashboard/creator",
+            label: "Creator Home",
+        },
+        {
+            icon: Person,
+            href: "/dashboard/creator/profile",
+            label: "My Profile",
+        },
+        {
+            icon: Bell,
+            href: "/dashboard/creator/my-prompts/create-prompt",
+            label: "Add Prompt",
+        },
+        {
+            icon: Envelope,
+            href: "/dashboard/creator/my-prompts",
+            label: "My Prompts",
+        },
+    ];
 
-const userSidebarLinks = [
-  {
-    icon: House,
-    href: "/dashboard/user",
-    label: "User Home",
-  },
-  {
-    icon: Person,
-    href: "/dashboard/user/profile",
-    label: "My Profile",
-  },
-  {
-    icon: Bell,
-    href: "/dashboard/user/add-prompt",
-    label: "Add Prompt",
-  },
-  {
-    icon: BookmarkCheck,
-    href: "/dashboard/user/saved-prompts",
-    label: "Saved Prompts",
-  },
-  {
-    icon: Star,
-    href: "/dashboard/user/my-reviews",
-    label: "My Reviews",
-  },
-];
+    const userSidebarLinks = [
+        {
+            icon: House,
+            href: "/dashboard/user",
+            label: "User Home",
+        },
+        {
+            icon: Person,
+            href: "/dashboard/user/profile",
+            label: "My Profile",
+        },
+        {
+            icon: Bell,
+            href: "/dashboard/user/add-prompt",
+            label: "Add Prompt",
+        },
+        {
+            icon: BookmarkCheckIcon,
+            href: "/dashboard/user/saved-prompts",
+            label: "Saved Prompts",
+        },
+        {
+            icon: Star,
+            href: "/dashboard/user/my-reviews",
+            label: "My Reviews",
+        },
+    ];
 
-const navLinksMap ={
-    creator: CreatorSidebarLinks,
-    user: userSidebarLinks,
-}
-const navItems = navLinksMap[user?.role] || [];
+    const adminSidebarLinks = [
+        {
+            icon: House,
+            href: "/dashboard/admin",
+            label: "Dashboard Home",
+        },
+        {
+            icon: Person,
+            href: "/dashboard/admin/profile",
+            label: "Admin Profile",
+        },
+        {
+            icon: Bell,
+            href: "/dashboard/admin/users",
+            label: "Manage Users",
+        },
+        {
+            icon: Envelope,
+            href: "/dashboard/admin/prompts",
+            label: "Manage Prompts",
+        },
+        {
+            icon: BookmarkCheckIcon,
+            href: "/dashboard/admin/reports",
+            label: "Reported Prompts",
+        },
+        {
+            icon: Gear,
+            href: "/dashboard/admin/settings",
+            label: "Settings",
+        },
+    ];
+
+    const navLinksMap = {
+        creator: CreatorSidebarLinks,
+        user: userSidebarLinks,
+        admin: adminSidebarLinks,
+    }
+    const navItems = navLinksMap[user?.role] || [];
     const navContent = (
         <nav className="flex flex-col gap-1">
             {navItems.map((item) => (
