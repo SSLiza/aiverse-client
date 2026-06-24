@@ -8,6 +8,8 @@ export default function Home() {
     <div>
       <Banner/>
       <FeaturedPrompts/>
+      
+      <WhyChooseUs/>
     </div>
   );
 }
