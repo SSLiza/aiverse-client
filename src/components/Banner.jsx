@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function Banner() {
   const tags = [
@@ -22,19 +23,30 @@ export default function Banner() {
 
       <div className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
         <div className="text-center">
-          
+
           {/* Badge */}
           <span className="inline-flex rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-sm font-medium text-violet-500">
             🚀 Discover Powerful AI Prompts
           </span>
 
           {/* Heading */}
-          <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 dark:text-white md:text-6xl">
-            Share, Discover & Sell
-            <span className="block bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent">
-              Premium AI Prompts
-            </span>
-          </h1>
+          <motion.h1
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-5xl font-bold"
+          >
+            Premium AI Prompts for Every Need
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="mt-6 text-lg"
+          >
+            Explore, create, and share premium AI prompts.
+          </motion.p>
 
           {/* Description */}
           <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600 dark:text-slate-400">

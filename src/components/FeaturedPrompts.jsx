@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
 import { Link } from "@heroui/react";
+import { motion } from "framer-motion";
+
 export default function FeaturedPrompts() {
     const [prompts, setPrompts] = useState([]);
 
@@ -19,11 +21,19 @@ export default function FeaturedPrompts() {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {prompts.map((prompt) => (
-                    <PromptCard
+                {prompts.map((prompt, index) => (
+                    <motion.div
                         key={prompt._id}
-                        prompt={prompt}
-                    />
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                            duration: 0.5,
+                            delay: index * 0.1,
+                        }}
+                    >
+                        <PromptCard prompt={prompt} />
+                    </motion.div>
                 ))}
             </div>
 
