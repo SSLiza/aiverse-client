@@ -63,10 +63,7 @@ export default function SignupForm({ redirectTo = "/" }) {
 
         setIsLoading(true);
 
-        const plan =
-            role === "user"
-                ? "user_free"
-                : "creator_free";
+        const plan = "free";
 
         try {
             const { error: authError } = await signUp.email({

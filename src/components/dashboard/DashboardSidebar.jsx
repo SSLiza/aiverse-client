@@ -54,7 +54,7 @@ export async function DashboardSidebar() {
         },
         {
             icon: Bell,
-            href: "/dashboard/user/add-prompt",
+            href: "/dashboard/user/my-prompts/create-prompt",
             label: "Add Prompt",
         },
         {
