@@ -1,3 +1,4 @@
+import { createPremium } from "@/lib/actions/premium";
 import { stripe } from "@/lib/stripe";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -20,6 +21,13 @@ export default async function Success({ searchParams }) {
   }
 
   if (status === "complete") {
+    const premiumInfo = {
+        email:customerEmail ,
+    }
+
+    const result = await createPremium(premiumInfo)
+    console.log(result);
+    
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black flex items-center justify-center px-6">
         <div className="w-full max-w-xl rounded-3xl border border-green-500/20 bg-white/5 backdrop-blur-xl p-10 text-center shadow-[0_0_60px_rgba(34,197,94,0.15)]">

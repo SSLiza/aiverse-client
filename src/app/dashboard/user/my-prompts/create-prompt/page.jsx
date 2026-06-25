@@ -3,22 +3,30 @@ import PromptForm from './PromptForm';
 import { getMyPrompts } from '@/lib/api/prompts';
 import { getUserSession } from '@/lib/core/session';
 import Link from 'next/link';
+import { userAc } from 'better-auth/plugins/admin/access';
 
 const CreatePrompt = async () => {
   const session = await getUserSession();
 
   const addedPrompts = await getMyPrompts(session.id);
   const plan =
-  {
-    plan: "free",
-    maxPrompts: 3,
-  }
+  session.plan === "free"
+    ? {
+        plan: "free",
+        maxPrompts: 3,
+      }
+    : {
+        plan: "premium",
+        maxPrompts: Infinity, // or any limit you want
+      };
 
   console.log("AddedPrompts", addedPrompts);
   return (
     <div className="max-w-4xl mx-auto p-6">
       {/* Usage Card */}
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-md border border-gray-200 dark:border-gray-800 p-6 mb-8">
+      {
+        session.plan === 'free' &&
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-md border border-gray-200 dark:border-gray-800 p-6 mb-8">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-2xl font-bold">
@@ -60,6 +68,7 @@ const CreatePrompt = async () => {
           prompts.
         </p>
       </div>
+      }
 
       {/* Content */}
       {addedPrompts.length < plan.maxPrompts ? (
