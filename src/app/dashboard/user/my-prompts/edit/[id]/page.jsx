@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { updatePrompt } from "@/lib/api/prompts";
-
+import { toast } from "react-toastify";
 export default function EditPromptPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -43,11 +43,11 @@ export default function EditPromptPage() {
     try {
       await updatePrompt(id, prompt);
 
-      alert("Prompt updated successfully!");
-      router.push("/dashboard/creator/my-prompts");
+      toast.success("Prompt updated successfully!");
+      router.push("/dashboard/user/my-prompts");
     } catch (error) {
       console.error(error);
-      alert("Failed to update prompt");
+      toast.error("Failed to update prompt");
     }
   };
 

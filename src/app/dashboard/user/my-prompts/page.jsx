@@ -88,7 +88,7 @@ export default function MyPromptsPage() {
                   <button
                     onClick={() =>
                       router.push(
-                        `/dashboard/creator/my-prompts/edit/${prompt._id}`
+                        `/dashboard/user/my-prompts/edit/${prompt._id}`
                       )
                     }
                     className="rounded bg-blue-500 px-3 py-1 text-white"

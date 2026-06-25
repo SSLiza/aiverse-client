@@ -58,6 +58,11 @@ export async function DashboardSidebar() {
             label: "Add Prompt",
         },
         {
+            icon: Bell,
+            href: "/dashboard/user/my-prompts",
+            label: "My Prompts",
+        },
+        {
             icon: BookmarkCheckIcon,
             href: "/dashboard/user/saved-prompts",
             label: "Saved Prompts",
@@ -73,7 +78,7 @@ export async function DashboardSidebar() {
         {
             icon: House,
             href: "/dashboard/admin",
-            label: "Dashboard Home",
+            label: "Admin Analytics",
         },
         {
             icon: Person,
