@@ -1,9 +1,12 @@
 'use server'
+import { serverFetch } from "@/lib/server-fetch";
+
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL
+
 export const createPrompt = async (newPromptData) => {
     console.log("createPrompt action started. baseURL is:", baseURL);
     try {
-        const res = await fetch(`${baseURL}/prompts`, {
+        const res = await serverFetch(`${baseURL}/prompts`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

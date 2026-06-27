@@ -1,7 +1,8 @@
 import ReportsList from "@/components/dashboard/ReportsList";
+import { serverFetch } from "@/lib/server-fetch";
 
 async function getReports() {
-  const res = await fetch(
+  const res = await serverFetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/admin/reports`,
     {
       cache: "no-store",
@@ -13,7 +14,6 @@ async function getReports() {
 
 export default async function AdminReportsPage() {
   const reports = await getReports();
-  console.log(reports);
 
   return (
     <div className="space-y-6">
@@ -28,7 +28,19 @@ export default async function AdminReportsPage() {
         </p>
       </div>
 
-      <ReportsList reports={reports} />
+      {reports.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-16 text-center">
+          <h2 className="text-2xl font-semibold">
+            No Reports Found
+          </h2>
+
+          <p className="mt-2 text-default-500">
+            Great! There are currently no reported prompts to review.
+          </p>
+        </div>
+      ) : (
+        <ReportsList reports={reports} />
+      )}
     </div>
   );
 }

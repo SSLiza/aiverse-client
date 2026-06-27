@@ -22,6 +22,7 @@ import {
 
 import { signIn, signUp } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { ImageIcon } from "lucide-react";
 
 export default function SignupForm({ redirectTo = "/" }) {
     // Form fields
@@ -29,6 +30,7 @@ export default function SignupForm({ redirectTo = "/" }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("user");
+    const [image, setImage] = useState("");
 
     // UI States
     const [isVisible, setIsVisible] = useState(false);
@@ -72,6 +74,7 @@ export default function SignupForm({ redirectTo = "/" }) {
                 name,
                 role,
                 plan,
+                image: image || "",
             });
 
             console.log(email, password, name, role, plan);
@@ -89,6 +92,7 @@ export default function SignupForm({ redirectTo = "/" }) {
             setName("");
             setEmail("");
             setPassword("");
+            setImage("");
 
             router.push(redirectTo);
         } catch (err) {
@@ -183,6 +187,20 @@ export default function SignupForm({ redirectTo = "/" }) {
                             />
                         </InputGroup>
                     </TextField>
+
+                                        <div className="space-y-1 text-left">
+                        <label className="text-zinc-550 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider block">Image URL (Optional)</label>
+                        <div className="relative">
+                            <ImageIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 dark:text-zinc-500" />
+                            <input
+                                type="url"
+                                placeholder="https://example.com/photo.jpg"
+                                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-transparent text-zinc-900 dark:text-white text-sm outline-none focus:border-[#7C3AED] dark:focus:border-[#7C3AED] transition-all placeholder-zinc-400 dark:placeholder-zinc-500"
+                                value={image}
+                                onChange={(e) => setImage(e.target.value)}
+                            />
+                        </div>
+                    </div>
 
                     {/* Password */}
                     <TextField

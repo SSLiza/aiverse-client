@@ -79,7 +79,7 @@ export default async function Success({ searchParams }) {
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
-              href="/dashboard"
+              href="/dashboard/user"
               className="flex-1 rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 py-3 font-semibold text-white hover:opacity-90 transition"
             >
               Go to Dashboard

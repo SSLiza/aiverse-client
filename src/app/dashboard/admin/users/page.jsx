@@ -1,7 +1,8 @@
 import UsersTable from "@/components/dashboard/UsersTable";
+import { serverFetch } from "@/lib/server-fetch";
 
 async function getUsers() {
-  const res = await fetch(
+  const res = await serverFetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/users`,
     { cache: "no-store" }
   );
@@ -10,9 +11,7 @@ async function getUsers() {
 }
 
 export default async function AdminUsersPage() {
-   const users = await getUsers();
-
-  console.log(users);
+  const users = await getUsers();
 
   return (
     <div className="p-6">

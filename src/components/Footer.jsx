@@ -11,13 +11,13 @@ export default function Footer() {
   }
   return (
     <footer className="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
-      <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <div className="mx-auto max-w-7xl px-8 py-12 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           
           {/* Brand */}
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-              Prompt<span className="text-violet-500">Hub</span>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+              AI<span className="text-violet-500">Verse</span>
             </h2>
 
             <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">

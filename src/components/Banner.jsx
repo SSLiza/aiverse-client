@@ -34,7 +34,7 @@ export default function Banner() {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-5xl font-bold"
+            className="text-3xl md:text-5xl font-bold"
           >
             Premium AI Prompts for Every Need
           </motion.h1>
@@ -88,13 +88,6 @@ export default function Banner() {
               className="rounded-xl bg-violet-600 px-6 py-3 font-medium text-white hover:bg-violet-700"
             >
               Explore Prompts
-            </Link>
-
-            <Link
-              href="/dashboard/add-prompt"
-              className="rounded-xl border border-slate-300 px-6 py-3 font-medium hover:border-violet-500 dark:border-slate-700"
-            >
-              Create Prompt
             </Link>
           </div>
         </div>

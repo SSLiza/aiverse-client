@@ -13,6 +13,7 @@ import {
 import { Button, Drawer } from "@heroui/react";
 import { BookmarkCheck, BookmarkCheckIcon } from "lucide-react";
 import Link from "next/link";
+import SidebarNav from "./SidebarNav";
 
 export async function DashboardSidebar() {
 
@@ -20,22 +21,22 @@ export async function DashboardSidebar() {
     // console.log("user", user);
     const CreatorSidebarLinks = [
         {
-            icon: House,
+            icon: "house",
             href: "/dashboard/creator",
             label: "Creator Home",
         },
         {
-            icon: Person,
+            icon: "person",
             href: "/dashboard/creator/profile",
             label: "My Profile",
         },
         {
-            icon: Bell,
+            icon: "bell",
             href: "/dashboard/creator/my-prompts/create-prompt",
             label: "Add Prompt",
         },
         {
-            icon: Envelope,
+            icon: "envelope",
             href: "/dashboard/creator/my-prompts",
             label: "My Prompts",
         },
@@ -43,32 +44,32 @@ export async function DashboardSidebar() {
 
     const userSidebarLinks = [
         {
-            icon: House,
+            icon: "house",
             href: "/dashboard/user",
             label: "User Home",
         },
         {
-            icon: Person,
+            icon: "person",
             href: "/dashboard/user/profile",
             label: "My Profile",
         },
         {
-            icon: Bell,
+            icon: "bell",
             href: "/dashboard/user/my-prompts/create-prompt",
             label: "Add Prompt",
         },
         {
-            icon: Bell,
+            icon: "bell",
             href: "/dashboard/user/my-prompts",
             label: "My Prompts",
         },
         {
-            icon: BookmarkCheckIcon,
+            icon: "bookmark",
             href: "/dashboard/user/saved-prompts",
             label: "Saved Prompts",
         },
         {
-            icon: Star,
+            icon: "star",
             href: "/dashboard/user/my-reviews",
             label: "My Reviews",
         },
@@ -76,34 +77,29 @@ export async function DashboardSidebar() {
 
     const adminSidebarLinks = [
         {
-            icon: House,
+            icon: "house",
             href: "/dashboard/admin",
             label: "Admin Analytics",
         },
         {
-            icon: Person,
-            href: "/dashboard/admin/profile",
-            label: "Admin Profile",
-        },
-        {
-            icon: Bell,
+            icon: "bell",
             href: "/dashboard/admin/users",
             label: "Manage Users",
         },
         {
-            icon: Envelope,
+            icon: "envelope",
             href: "/dashboard/admin/prompts",
             label: "Manage Prompts",
         },
         {
-            icon: BookmarkCheckIcon,
+            icon: "bookmark",
             href: "/dashboard/admin/reports",
             label: "Reported Prompts",
         },
         {
-            icon: Gear,
-            href: "/dashboard/admin/settings",
-            label: "Settings",
+            icon: "gear",
+            href: "/dashboard/admin/payments",
+            label: "All Payments",
         },
     ];
 
@@ -113,20 +109,7 @@ export async function DashboardSidebar() {
         admin: adminSidebarLinks,
     }
     const navItems = navLinksMap[user?.role] || [];
-    const navContent = (
-        <nav className="flex flex-col gap-1">
-            {navItems.map((item) => (
-                <Link
-                    href={item.href}
-                    key={item.label}
-                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors hover:bg-default"
-                >
-                    <item.icon className="size-5" />
-                    {item.label}
-                </Link>
-            ))}
-        </nav>
-    );
+    const navContent = <SidebarNav navItems={navItems} />;
 
     return (
         <>

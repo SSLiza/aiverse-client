@@ -3,12 +3,13 @@ import {
     FileText,
     MessageSquare,
     Flag,
-    TrendingUp,
     Sparkles,
 } from "lucide-react";
+import AdminCharts from "@/components/dashboard/AdminCharts";
+import { serverFetch } from "@/lib/server-fetch";
 
 async function getStats() {
-    const res = await fetch(
+    const res = await serverFetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/admin/stats`,
         {
             cache: "no-store",
@@ -20,6 +21,7 @@ async function getStats() {
 
 export default async function AdminDashboardHomePage() {
     const stats = await getStats();
+
     const statsData = [
         {
             title: "Total Users",
@@ -37,107 +39,70 @@ export default async function AdminDashboardHomePage() {
             icon: MessageSquare,
         },
         {
-            title: "Reports",
-            value: stats.totalReports,
+            title: "Total Copies",
+            value: stats.totalCopies,
             icon: Flag,
         },
     ];
 
     return (
-        <div className="space-y-8 p-6">
-            {/* Welcome Banner */}
-            <section className="rounded-3xl bg-gradient-to-r from-violet-600 to-indigo-600 p-8 text-white">
-                <h1 className="text-4xl font-bold">
-                    Welcome Back, Admin 👋
-                </h1>
+        <div className="space-y-6 md:space-y-8 p-4 md:p-6 lg:p-8">
+                {/* Welcome Banner */}
+                <section className="rounded-3xl bg-gradient-to-r from-violet-600 to-indigo-600 p-6 sm:p-8 lg:p-10 text-white">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+                        Welcome Back, Admin 👋
+                    </h1>
 
-                <p className="mt-3 max-w-2xl text-white/80">
-                    Monitor platform activity, manage users,
-                    review reports, and keep AIVerse growing.
-                </p>
-            </section>
+                    <p className="mt-3 max-w-2xl text-sm sm:text-base text-white/80">
+                        Monitor platform activity, manage users, review reports,
+                        and keep AIVerse growing.
+                    </p>
+                </section>
 
-            {/* Statistics */}
-            <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-                {statsData.map((item) => (
-                    <div
-                        key={item.title}
-                        className="rounded-3xl border bg-background p-6 shadow-sm"
-                    >
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm text-default-500">
-                                    {item.title}
-                                </p>
+                {/* Statistics Cards */}
+                <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+                    {statsData.map((item) => (
+                        <div
+                            key={item.title}
+                            className="rounded-3xl border bg-background p-5 sm:p-6 shadow-sm hover:shadow-md transition"
+                        >
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="min-w-0">
+                                    <p className="text-sm text-default-500 truncate">
+                                        {item.title}
+                                    </p>
 
-                                <h2 className="mt-2 text-4xl font-bold">
-                                    {item.value}
-                                </h2>
-                            </div>
+                                    <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-bold break-words">
+                                        {item.value}
+                                    </h2>
+                                </div>
 
-                            <div className="rounded-2xl bg-primary/10 p-4">
-                                <item.icon className="h-8 w-8 text-primary" />
+                                <div className="flex-shrink-0 rounded-2xl bg-primary/10 p-3 sm:p-4">
+                                    <item.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+                                </div>
                             </div>
                         </div>
+                    ))}
+                </section>
+
+                {/* Highlights */}
+                <section className="rounded-3xl border p-5 sm:p-6 lg:p-8">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                        <Sparkles className="text-yellow-500 h-6 w-6" />
+
+                        <h2 className="text-xl sm:text-2xl font-bold">
+                            Todays Highlights
+                        </h2>
                     </div>
-                ))}
-            </section>
 
-            {/* Quick Actions */}
-            <section className="grid gap-6 lg:grid-cols-3">
-                <div className="rounded-3xl border p-6">
-                    <Users className="mb-4 h-8 w-8 text-primary" />
-
-                    <h3 className="text-xl font-semibold">
-                        User Management
-                    </h3>
-
-                    <p className="mt-2 text-default-500">
-                        Manage users, roles, and account status.
+                    <p className="mt-4 text-sm sm:text-base text-default-500">
+                        View important platform activities and recent trends.
                     </p>
-                </div>
+                </section>
 
-                <div className="rounded-3xl border p-6">
-                    <Flag className="mb-4 h-8 w-8 text-red-500" />
-
-                    <h3 className="text-xl font-semibold">
-                        Review Reports
-                    </h3>
-
-                    <p className="mt-2 text-default-500">
-                        Check reported prompts and moderate content.
-                    </p>
-                </div>
-
-                <div className="rounded-3xl border p-6">
-                    <TrendingUp className="mb-4 h-8 w-8 text-green-500" />
-
-                    <h3 className="text-xl font-semibold">
-                        Platform Growth
-                    </h3>
-
-                    <p className="mt-2 text-default-500">
-                        Track prompt engagement and platform usage.
-                    </p>
-                </div>
-            </section>
-
-            {/* Announcement Panel */}
-            <section className="rounded-3xl border p-8">
-                <div className="flex items-center gap-3">
-                    <Sparkles className="text-yellow-500" />
-
-                    <h2 className="text-2xl font-bold">
-                        Todays Highlights
-                    </h2>
-                </div>
-
-                <ul className="mt-6 space-y-3 text-default-600">
-                    <li>• 10 new prompts were submitted today.</li>
-                    <li>• 3 prompts have been reported.</li>
-                    <li>• 15 new users joined this week.</li>
-                    <li>• Most used AI tool: ChatGPT.</li>
-                </ul>
+            {/* Charts */}
+            <section className="w-full overflow-hidden rounded-3xl border p-2 sm:p-4">
+                <AdminCharts stats={stats} />
             </section>
         </div>
     );

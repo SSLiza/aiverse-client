@@ -496,7 +496,7 @@ export default function CreatePromptPage() {
                         <Button
                             color="primary"
                             type="submit"
-                            className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold px-6 py-2.5 rounded-xl shadow-lg shadow-violet-600/10 hover:shadow-violet-600/20 transition-all duration-200 flex items-center gap-2"
+                            className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold px-2 md:px-6 py-2.5 rounded-xl shadow-lg shadow-violet-600/10 hover:shadow-violet-600/20 transition-all duration-200 flex items-center gap-2"
                         >
                             Submit Prompt
                             <Send size={14} />

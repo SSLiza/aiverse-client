@@ -1,9 +1,11 @@
 'use server'
+import { serverFetch } from "@/lib/server-fetch";
+
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL
+
 export const createPremium = async (premiumInfo) => {
-    // console.log("createPrompt action started. baseURL is:", baseURL);
     try {
-        const res = await fetch(`${baseURL}/premiums`, {
+        const res = await serverFetch(`${baseURL}/premiums`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -13,11 +15,11 @@ export const createPremium = async (premiumInfo) => {
         if (!res.ok) {
             const errText = await res.text().catch(() => "No body");
             console.error(`fetch to backend failed. Status: ${res.status}, Body: ${errText}`);
-            throw new Error(`Failed to create prompt: Backend responded with ${res.status}`);
+            throw new Error(`Failed to create premium: Backend responded with ${res.status}`);
         }
         return res.json();
     } catch (error) {
-        console.error("Error inside createPrompt action:", error);
+        console.error("Error inside createPremium action:", error);
         throw error;
     }
 }

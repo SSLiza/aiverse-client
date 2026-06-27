@@ -5,6 +5,7 @@ import { useSession } from "@/lib/auth-client";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { Button, Card, Chip } from "@heroui/react";
+import LoadingPage from "@/components/LoadingPage";
 
 export default function SavedPromptsPage() {
   const { data: session, isPending } = useSession();
@@ -59,12 +60,7 @@ export default function SavedPromptsPage() {
   };
 
   if (isPending || (loading && session?.user?.email)) {
-    return (
-      <div className="p-6 text-center">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-violet-600 border-r-transparent align-[-0.125em]" />
-        <p className="mt-2 text-slate-500">Loading saved prompts...</p>
-      </div>
-    );
+    return <LoadingPage message="Loading saved prompts..." />;
   }
 
   return (

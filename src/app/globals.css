@@ -2,4 +2,40 @@
 /* @import "tailwindcss/base"; */
 /* @import "tailwindcss/components"; */
 /* @import "tailwindcss/utilities"; */
-@import "@heroui/styles"; 
+@import "@heroui/styles";
+
+@layer base {
+  :root {
+    color-scheme: light;
+    background-color: #f8fafc;
+    color: #0f172a;
+  }
+
+  .dark {
+    color-scheme: dark;
+    background-color: #020617;
+    color: #f8fafc;
+  }
+
+  html {
+    min-height: 100%;
+  }
+
+  body {
+    min-height: 100%;
+    @apply bg-slate-50 text-slate-950 transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-slate-950 text-slate-50;
+  }
+
+  body,
+  button,
+  input,
+  textarea,
+  select,
+  a {
+    @apply transition-colors duration-300;
+  }
+}

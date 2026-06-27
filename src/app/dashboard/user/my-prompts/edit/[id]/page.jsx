@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { updatePrompt } from "@/lib/api/prompts";
 import { toast } from "react-toastify";
+import LoadingPage from "@/components/LoadingPage";
 export default function EditPromptPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function EditPromptPage() {
   };
 
   if (loading) {
-    return <div className="p-6">Loading...</div>;
+    return <LoadingPage message="Fetching prompt details..." />;
   }
 
   return (

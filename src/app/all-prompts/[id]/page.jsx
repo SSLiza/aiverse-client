@@ -52,7 +52,14 @@ export default async function PromptDetailsPage({ params }) {
       />
 
       {/* TITLE */}
-      <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">{prompt.title}</h1>
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">{prompt.title}</h1>
+        {isPrivate && (
+          <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-semibold text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
+            💎 Premium
+          </span>
+        )}
+      </div>
 
       {/* META */}
       <div className="mt-4 flex flex-wrap gap-2">

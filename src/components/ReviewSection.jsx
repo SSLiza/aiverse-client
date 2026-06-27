@@ -72,6 +72,18 @@ const ReviewSection = ({ promptId, currentUser }) => {
   const [fetching, setFetching]   = useState(true);
   const [refresh, setRefresh]     = useState(false);
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
+  const [page, setPage]           = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [ratingStats, setRatingStats] = useState({
+    avgRating: 0,
+    starCounts: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+  });
+  const limit = 3;
+
+  useEffect(() => {
+    setPage(1);
+  }, [promptId]);
 
   // fetch reviews
   useEffect(() => {
@@ -79,15 +91,35 @@ const ReviewSection = ({ promptId, currentUser }) => {
       try {
         setFetching(true);
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/reviews/${promptId}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}/reviews/${promptId}?page=${page}&limit=${limit}`
         );
         const data = await res.json();
-        setReviews(data);
+
+        const reviewsData = Array.isArray(data) ? data : data.data || [];
+        const fetchedPage = Number(data.currentPage ?? page) || page;
+        const pageCount = Math.max(1, Number(data.totalPages ?? 1) || 1);
+        const count = Number(data.totalCount ?? reviewsData.length) || 0;
+
+        setReviews(reviewsData);
+        setTotalPages(pageCount);
+        setTotalCount(count);
+        if (data.ratingStats) {
+          setRatingStats(data.ratingStats);
+        }
+
+        if (fetchedPage !== page) {
+          setPage(fetchedPage);
+        }
 
         // check if current user already reviewed
         if (currentUser?.email) {
-          const found = data.find((r) => r.email === currentUser.email);
-          setAlreadyReviewed(!!found);
+          const userRes = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/reviews/${promptId}?email=${encodeURIComponent(
+              currentUser.email
+            )}`
+          );
+          const userData = await userRes.json();
+          setAlreadyReviewed(!!userData.alreadyReviewed);
         }
       } catch (err) {
         console.error("Failed to fetch reviews:", err);
@@ -97,25 +129,30 @@ const ReviewSection = ({ promptId, currentUser }) => {
     };
 
     fetchReviews();
-  }, [promptId, currentUser, refresh]);
+  }, [promptId, currentUser, refresh, page]);
+
+  useEffect(() => {
+    if (totalPages > 0 && page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [page, totalPages]);
 
   // avg rating
   const avgRating =
-    reviews.length > 0
-      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+    totalCount > 0 && ratingStats.avgRating > 0
+      ? ratingStats.avgRating.toFixed(1)
       : null;
 
   // rating distribution
-  const distribution = [5, 4, 3, 2, 1].map((star) => ({
-    star,
-    count: reviews.filter((r) => r.rating === star).length,
-    percent:
-      reviews.length > 0
-        ? Math.round(
-            (reviews.filter((r) => r.rating === star).length / reviews.length) * 100
-          )
-        : 0,
-  }));
+  const distribution = [5, 4, 3, 2, 1].map((star) => {
+    const count = ratingStats.starCounts?.[star] || 0;
+    const percent = totalCount > 0 ? Math.round((count / totalCount) * 100) : 0;
+    return {
+      star,
+      count,
+      percent,
+    };
+  });
 
   const handleSubmit = async () => {
     if (!rating)         return toast.error("Please select a rating");
@@ -141,6 +178,7 @@ const ReviewSection = ({ promptId, currentUser }) => {
       toast.success("Review submitted successfully!");
       setRating(0);
       setComment("");
+      setPage(1);
       setRefresh((p) => !p);
     } catch {
       toast.error("Something went wrong. Try again.");
@@ -253,7 +291,9 @@ const ReviewSection = ({ promptId, currentUser }) => {
           ))
         ) : reviews.length === 0 ? (
           <p className="text-center text-slate-500 py-6">
-            No reviews yet. Be the first to review!
+            {totalCount === 0
+              ? "No reviews yet. Be the first to review!"
+              : "No reviews on this page."}
           </p>
         ) : (
           reviews.map((review) => (
@@ -261,6 +301,36 @@ const ReviewSection = ({ promptId, currentUser }) => {
           ))
         )}
       </div>
+
+      {totalPages > 1 && !fetching && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4">
+          <p className="text-sm text-slate-500">
+            Showing {Math.min((page - 1) * limit + 1, totalCount)}-
+            {Math.min(page * limit, totalCount)} of {totalCount} reviews
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              disabled={page === 1}
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-50"
+            >
+              Previous
+            </button>
+            <span className="text-sm text-slate-600">
+              Page {page} of {totalPages}
+            </span>
+            <button
+              type="button"
+              disabled={page === totalPages}
+              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

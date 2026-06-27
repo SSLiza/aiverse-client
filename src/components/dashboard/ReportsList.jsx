@@ -58,15 +58,25 @@ export default function ReportsList({ reports }) {
     }
   };
 
-  return (
-    <div className="space-y-4">
-      {allReports.map((report) => (
+return (
+  <div className="space-y-4">
+    {allReports.length === 0 ? (
+      <div className="rounded-2xl border p-10 text-center text-default-500">
+        No reports found.
+      </div>
+    ) : (
+      allReports.map((report) => (
         <div
           key={report._id}
-          className="rounded-2xl border p-6 shadow-sm"
+          className="rounded-2xl border p-4 sm:p-6 shadow-sm"
         >
-          <div className="flex items-center justify-between">
-            <Chip color="danger" variant="flat">
+          {/* Top Section */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <Chip
+              color="danger"
+              variant="flat"
+              className="w-fit"
+            >
               Reason: {report.reason}
             </Chip>
 
@@ -78,23 +88,29 @@ export default function ReportsList({ reports }) {
             </p>
           </div>
 
-          <h2 className="mt-4 text-2xl font-semibold">
+          {/* Prompt Title */}
+          <h2 className="mt-4 text-xl sm:text-2xl font-semibold break-words">
             Prompt: {report.promptTitle}
           </h2>
 
+          {/* Report Details */}
           <div className="mt-4 rounded-xl border p-4">
             <span className="font-semibold">
               Report Details:
             </span>{" "}
-            {report.reason}
+            <span className="break-words">
+              {report.reason}
+            </span>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-            <p className="text-sm text-default-500">
+          {/* Footer */}
+          <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <p className="text-sm text-default-500 break-all">
               Reported by: {report.reporterEmail}
             </p>
 
-            <div className="flex flex-wrap gap-2">
+            {/* Actions */}
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
               <Button
                 variant="flat"
                 startContent={<Eye size={16} />}
@@ -140,12 +156,13 @@ export default function ReportsList({ reports }) {
                   removePrompt(report.promptId)
                 }
               >
-                Remove Prompt
+                Remove
               </Button>
             </div>
           </div>
         </div>
-      ))}
-    </div>
-  );
+      ))
+    )}
+  </div>
+);
 }

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { deletePrompt, getMyPrompts } from "@/lib/api/prompts";
+import LoadingPage from "@/components/LoadingPage";
 
 export default function MyPromptsPage() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function MyPromptsPage() {
   }, [creatorId]);
 
   if (loading) {
-    return <div className="p-6">Loading...</div>;
+    return <LoadingPage message="Loading your prompts..." />;
   }
 
   const handleDelete = async (id) => {

@@ -1,11 +1,10 @@
 import PromptsTable from "@/components/dashboard/PromptsTable";
+import { serverFetch } from "@/lib/server-fetch";
 
 async function getPrompts() {
-  const res = await fetch(
+  const res = await serverFetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/admin/prompts`,
-    {
-      cache: "no-store",
-    }
+    { cache: "no-store" }
   );
 
   return res.json();
@@ -22,7 +21,8 @@ export default async function AdminPromptsPage() {
         </h1>
 
         <p className="text-default-500">
-          Approve templates, reject with feedback, or tag featured highlights.
+          Approve templates, reject with feedback,
+          or tag featured highlights.
         </p>
       </div>
 

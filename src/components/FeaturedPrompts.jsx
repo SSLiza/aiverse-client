@@ -15,7 +15,7 @@ export default function FeaturedPrompts() {
     }, []);
 
     return (
-        <section className="py-12 px-20">
+        <section className="py-12 px-10 md:px-20">
             <h2 className="text-3xl font-bold text-center mb-8">
                 Featured Prompts
             </h2>

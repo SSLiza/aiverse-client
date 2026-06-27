@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import PromptCard from "@/components/PromptCard";
+import LoadingPage from "@/components/LoadingPage";
 
 const AllPromtPage = () => {
   const [prompts, setPrompts] = useState([]);
@@ -78,6 +79,7 @@ const AllPromtPage = () => {
           {/* SEARCH */}
           <input
             type="text"
+            value={filters.search}
             placeholder="Search prompts..."
             className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 w-full"
             onChange={(e) => handleChange("search", e.target.value)}
@@ -85,6 +87,7 @@ const AllPromtPage = () => {
 
           {/* CATEGORY */}
           <select
+            value={filters.category}
             className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer"
             onChange={(e) => handleChange("category", e.target.value)}
           >
@@ -100,6 +103,7 @@ const AllPromtPage = () => {
 
           {/* AI TOOL */}
           <select
+            value={filters.aiTool}
             className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer"
             onChange={(e) => handleChange("aiTool", e.target.value)}
           >
@@ -114,6 +118,7 @@ const AllPromtPage = () => {
 
           {/* DIFFICULTY */}
           <select
+            value={filters.difficulty}
             className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer"
             onChange={(e) => handleChange("difficulty", e.target.value)}
           >
@@ -125,6 +130,7 @@ const AllPromtPage = () => {
 
           {/* SORT */}
           <select
+            value={filters.sort}
             className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer"
             onChange={(e) => handleChange("sort", e.target.value)}
           >
@@ -138,10 +144,7 @@ const AllPromtPage = () => {
 
       {/* LOADING */}
       {loading ? (
-        <div className="text-center py-20">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-violet-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />
-          <p className="mt-4 text-slate-500">Loading prompts...</p>
-        </div>
+        <LoadingPage message="Fetching prompts..." fullHeight={false} />
       ) : prompts.length === 0 ? (
         <div className="text-center py-20 border border-dashed rounded-3xl">
           <p className="text-slate-500">No prompts found matching your criteria.</p>
