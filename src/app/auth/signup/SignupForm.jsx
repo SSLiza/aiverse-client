@@ -247,7 +247,7 @@ export default function SignupForm({ redirectTo = "/" }) {
 
                     <div className="space-y-2 pt-1">
                         <label className="text-gray-400 text-xs font-medium block">Signup As</label>
-                        <div className="flex gap-6 text-sm text-white">
+                        <div className="flex gap-6 text-sm">
                             <label className="flex items-center gap-2 cursor-pointer select-none">
                                 <input
                                     type="radio"
