@@ -112,7 +112,10 @@ export default function CustomerReviews() {
               reviews.map((review) => (
                 <motion.div
                   key={review._id}
-                  variants={cardVariants}
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                  transition={{ type: "spring", stiffness: 100, damping: 15 }}
                   layout
                   className="border border-default-200 dark:border-zinc-800 rounded-2xl p-6 bg-white dark:bg-zinc-950 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col justify-between"
                 >
