@@ -99,11 +99,15 @@ export default function UsersTable({ users }) {
             >
               {/* Profile */}
               <div className="flex items-center gap-3">
-                <Avatar
-                  src={user.image || ""}
-                  name={user.name}
-                  size="md"
-                />
+                <div className="p-[1.5px] bg-gradient-to-tr from-[#7C3AED] via-[#9333EA] to-[#38BDF8] rounded-full group-hover:scale-105 transition-transform duration-300">
+                  <Avatar size="sm" className="bg-transparent border-0">
+                    <Avatar.Image src={user.image} alt={user.name} />
+                    <Avatar.Fallback className="bg-zinc-950 text-white font-bold text-xs">
+                      {user.name?.charAt(0).toUpperCase() || 'U'}
+                    </Avatar.Fallback>
+                  </Avatar>
+                </div>
+
 
                 <div className="min-w-0">
                   <p className="font-semibold">
@@ -165,17 +169,17 @@ export default function UsersTable({ users }) {
                         e.target.value
                       )
                     }
-                    className="w-full rounded-lg border border-default-300 bg-transparent px-3 py-2 outline-none"
+                    className="w-full rounded-lg border border-default-300 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 py-2 outline-none text-slate-900 dark:text-slate-100"
                   >
-                    <option value="admin">
+                    <option value="admin" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                       Admin
                     </option>
 
-                    <option value="creator">
+                    <option value="creator" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                       Creator
                     </option>
 
-                    <option value="user">
+                    <option value="user" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                       User
                     </option>
                   </select>
@@ -187,6 +191,7 @@ export default function UsersTable({ users }) {
                 fullWidth
                 color="danger"
                 variant="flat"
+                className="text-red-600 hover:bg-red-100"
                 isLoading={deletingId === user._id}
                 onPress={() =>
                   deleteUser(user._id)
@@ -247,11 +252,16 @@ export default function UsersTable({ users }) {
 
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <Avatar
-                        src={user.image || ""}
-                        name={user.name}
-                        size="sm"
-                      />
+
+                      <div className="p-[1.5px] bg-gradient-to-tr from-[#7C3AED] via-[#9333EA] to-[#38BDF8] rounded-full group-hover:scale-105 transition-transform duration-300">
+                        <Avatar size="sm" className="bg-transparent border-0">
+                          <Avatar.Image src={user.image} alt={user.name} />
+                          <Avatar.Fallback className="bg-zinc-950 text-white font-bold text-xs">
+                            {user.name?.charAt(0).toUpperCase() || 'U'}
+                          </Avatar.Fallback>
+                        </Avatar>
+                      </div>
+
 
                       <p className="font-medium">
                         {user.name ||
@@ -292,17 +302,17 @@ export default function UsersTable({ users }) {
                             e.target.value
                           )
                         }
-                        className="rounded-lg border border-default-300 px-3 py-2 outline-none"
+                        className="rounded-lg border border-default-300 dark:border-slate-800 px-3 py-2 outline-none bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
                       >
-                        <option value="admin">
+                        <option value="admin" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                           Admin
                         </option>
 
-                        <option value="creator">
+                        <option value="creator" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                           Creator
                         </option>
 
-                        <option value="user">
+                        <option value="user" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                           User
                         </option>
                       </select>
@@ -319,6 +329,7 @@ export default function UsersTable({ users }) {
                     <Button
                       isIconOnly
                       color="danger"
+                      className="text-red-600 hover:bg-red-100"
                       variant="flat"
                       isLoading={
                         deletingId === user._id

@@ -112,7 +112,7 @@ export default async function UserProfilePage() {
             {!isPremium && (
               <div className="mt-4">
                 <Link
-                  href="/payment"
+                  href="/payment?redirect=/dashboard/user/profile"
                   className="w-full inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-750 text-white font-semibold text-sm shadow-md transition-all duration-200"
                 >
                   Upgrade to Premium ($5)

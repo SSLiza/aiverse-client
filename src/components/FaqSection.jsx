@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const faqs = [
   {
@@ -14,7 +15,7 @@ const faqs = [
   },
   {
     q: "Which AI tools are supported?",
-    a: "We support ChatGPT, Claude, Gemini, Mistral, and more — with tags to filter by model.",
+    a: "We support ChatGPT, Claude, Gemini, Copilot, Midjourney, and Perplexity — with tags to filter by model.",
   },
   {
     q: "How do I copy a prompt?",
@@ -33,46 +34,69 @@ export default function FaqSection() {
     setOpenIndex(openIndex === i ? null : i);
   };
 
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 100, damping: 15 },
+    },
+  };
+
   return (
-    <section className="py-24 px-4">
-      <div className="max-w-2xl mx-auto">
+    <section className="py-24 px-4 bg-default-50/10 dark:bg-zinc-950/5">
+      <div className="max-w-3xl mx-auto">
         {/* Heading */}
-        <div className="text-center mb-12">
-          <span className="inline-block rounded-full border border-violet-500/30 px-4 py-1.5 text-sm font-medium">
+        <div className="text-center mb-16">
+          <span className="inline-block px-3 py-1 rounded-full bg-violet-500/10 text-violet-650 dark:text-violet-400 text-xs font-bold uppercase tracking-wider mb-3">
             FAQ
           </span>
 
-          <h2 className="mt-4 text-4xl font-bold">
+          <h2 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-zinc-100 dark:to-zinc-400">
             Frequently Asked Questions
           </h2>
 
-          <div className="mx-auto mt-3 h-[3px] w-12 rounded-full" />
-
-          <p className="mt-4 text-[#8B8BAD]">
+          <p className="mt-4 text-default-500 text-sm sm:text-base max-w-lg mx-auto">
             Everything you need to know about our AI prompt marketplace.
           </p>
         </div>
 
         {/* Accordion */}
-        <div className="flex flex-col gap-2">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="flex flex-col gap-3"
+        >
           {faqs.map((faq, i) => {
             const isOpen = openIndex === i;
 
             return (
-              <div
+              <motion.div
                 key={i}
-                className={`rounded-2xl border transition-colors duration-200 overflow-hidden ${
+                variants={itemVariants}
+                className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                   isOpen
-                    ? "border-violet-500/50"
-                    : "border-[#1E1E30]"
+                    ? "border-violet-500 bg-violet-500/[0.02]"
+                    : "border-default-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:border-default-300 dark:hover:border-zinc-700"
                 }`}
               >
                 <button
                   onClick={() => toggle(i)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer"
                 >
-                  <span className="text-[15px] font-medium">
+                  <span className="text-sm sm:text-base font-bold text-foreground">
                     {faq.q}
                   </span>
 
@@ -84,35 +108,32 @@ export default function FaqSection() {
                     }`}
                   >
                     <Plus
-                      className="h-3.5 w-3.5"
+                      className="h-3.5 w-3.5 text-violet-655 dark:text-violet-400"
                       strokeWidth={2.5}
                     />
                   </span>
                 </button>
 
-                <div
-                  className={`grid transition-all duration-300 ease-in-out ${
-                    isOpen
-                      ? "grid-rows-[1fr]"
-                      : "grid-rows-[0fr]"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <p
-                      className={`px-6 pb-5 pt-4 text-sm leading-relaxed text-[#8B8BAD] border-t ${
-                        isOpen
-                          ? "border-violet-500/20"
-                          : "border-[#1E1E30]"
-                      }`}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
                     >
-                      {faq.a}
-                    </p>
-                  </div>
-                </div>
-              </div>
+                      <div className="px-6 pb-5 pt-2 border-t border-default-100 dark:border-zinc-900/80">
+                        <p className="text-xs sm:text-sm leading-relaxed text-default-500">
+                          {faq.a}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

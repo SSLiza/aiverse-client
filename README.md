@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌌 AIverse - AI Prompt Sharing & Marketplace Platform
 
-## Getting Started
+AIverse is a modern, premium AI prompt-sharing and marketplace platform designed to help developers, creators, and AI enthusiasts discover, share, bookmark, and manage optimized prompts for popular tools like ChatGPT, Claude, Gemini, and Midjourney. 
 
-First, run the development server:
+The platform offers a role-based dashboard ecosystem, Stripe payment flows, moderation controls, and responsive UI themes to foster a community-driven prompt ecosystem.
 
+---
+
+## 🚀 Live Links
+* **Frontend Application:** [AIverse Client](https://aiverse-client-six.vercel.app)
+* **Backend API Server:** [AIverse Server](https://aiverse-server-zeta.vercel.app)
+
+---
+
+## ✨ Key Features
+
+### 🔑 Authentication & Security
+* **Social & Credentials Login:** Powered by secure session handling and Google OAuth integration.
+* **Role-Based Routing:** Customized flows and middlewares for `USER`, `CREATOR`, and `ADMIN` members.
+
+### 💳 Monetization & Access
+* **Stripe Premium Upgrade:** One-time $5 checkout session to unlock premium access.
+* **Instant Activation:** Automatically updates subscription plans to `Premium` upon successful checkout.
+* **Access Control:** Automatically limits free users to a maximum of 3 prompt submissions.
+
+### 📝 Prompt Management
+* **Interactive Marketplace:** Advanced client-side search, category filtering, and sorting parameters.
+* **Submissions Pipeline:** Rich metadata fields including Thumbnail upload, AI Tool, Tags, and Difficulty Selector (Beginner, Intermediate, Pro).
+* **Review Moderation:** Submitted prompts remain `pending` until reviewed and approved/rejected by an administrator.
+
+### 🔖 Bookmarks & Interactive Reviews
+* **Bookmarks Dashboard:** Fast template bookmarking with immediate removal actions.
+* **User Review Engine:** Share ratings and reviews. Deleting a review triggers database aggregations to recalculate average ratings.
+
+### 📊 Modern Performance Analytics
+* **Interactive Charts:** Recharts analytics illustrating prompt copies, category distribution, and total reviews.
+* **Analytics Modal:** Quick performance statistics popup directly from the dashboard table.
+
+### 🌓 Responsive Aesthetics
+* **Theme Toggle:** Seamless light and dark mode transitions.
+* **Interactive Micro-animations:** Powered by Framer Motion for scroll-triggers, banner animations, and card layouts.
+
+---
+
+## 🛠️ Technology Stack & NPM Packages
+
+### Frontend (Client-Side)
+* **Framework:** Next.js (App Router)
+* **Styling:** TailwindCSS, DaisyUI, HeroUI (NextUI)
+* **Animation:** Framer Motion
+* **Analytics:** Recharts
+* **State & Flow:** React Context, React Hook Form, Lucide Icons, React Toastify
+* **Payments:** Stripe JS SDK (`@stripe/react-stripe-js`, `@stripe/stripe-js`)
+
+### Backend (Server-Side)
+* **Runtime & Framework:** Node.js, Express
+* **Database:** MongoDB (Native Driver & Mongoose)
+* **Security:** JWT, Cors
+* **Integrations:** Stripe SDK (Checkout sessions & metadata mapping)
+
+---
+
+## 💻 Local Setup & Installation
+
+### 1. Clone the Workspace
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/SSLiza/aiverse-client.git
+cd aiverse
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure Environment Variables
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+#### Backend (`aiverse-server/.env`)
+Create a `.env` file in the server directory with:
+```env
+PORT=5000
+DB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+CLIENT_URL=http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### Frontend (`aiverse-client/.env.local`)
+Create a `.env.local` file in the client directory with:
+```env
+NEXT_PUBLIC_BASE_URL=http://localhost:5000
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+NEXTAUTH_SECRET=your_nextauth_secret
+```
 
-## Learn More
+### 3. Run Locally
 
-To learn more about Next.js, take a look at the following resources:
+#### Run API Server:
+```bash
+cd aiverse-server
+npm install
+npm start # or nodemon index.js
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Run Frontend Client:
+```bash
+cd aiverse-client
+npm install
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📌 Future Milestones
+* [ ] AI-assisted prompt optimization suggestions before listing.
+* [ ] Real-time browser notifications for prompt approval and bookmark updates.
+* [ ] Advanced exports for prompts (JSON, TXT, CSV formatting).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 👨‍💻 Developer
+* **Name:** Shajeda Sultana
+* **Email:** [shajedasultanaliza2002@gmail.com](mailto:shajedasultanaliza2002@gmail.com)

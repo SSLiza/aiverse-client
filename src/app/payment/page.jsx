@@ -1,10 +1,21 @@
 import React from "react";
+import { getUserSession } from "@/lib/core/session";
+import { redirect } from "next/navigation";
 
-const PaymentPage = () => {
+const PaymentPage = async ({ searchParams }) => {
+    // Private route protection
+    const user = await getUserSession();
+    const params = await searchParams;
+    const redirectPath = params?.redirect || "/dashboard/user";
+
+    if (!user) {
+        return redirect(`/auth/signin?redirect=${encodeURIComponent(`/payment?redirect=${encodeURIComponent(redirectPath)}`)}`);
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white px-6 flex items-center">
 
-            <div className="max-w-5xl mx-auto w-full">
+            <div className="max-w-5xl mx-auto w-full py-12">
 
                 {/* Header */}
                 <div className="text-center mb-8">
@@ -45,12 +56,12 @@ const PaymentPage = () => {
                         </div>
 
                         <form
-                            action="/api/checkout_sessions"
+                            action={`/api/checkout_sessions?redirect=${encodeURIComponent(redirectPath)}`}
                             method="POST"
                         >
                             <button
                                 type="submit"
-                                className="w-full rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 py-3 font-semibold hover:opacity-90 transition"
+                                className="w-full rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 py-3 font-semibold hover:opacity-90 transition cursor-pointer"
                             >
                                 Upgrade Now 🚀
                             </button>

@@ -118,13 +118,6 @@ export default function ProfilePage() {
                   </p>
                 </div>
               </div>
-
-              {/* Plan */}
-              <div className="flex items-center gap-4 rounded-2xl border p-4">
-                <div className="rounded-xl bg-primary/10 p-3">
-                  <Crown className="h-5 w-5 text-primary" />
-                </div>
-              </div>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ async function getUsers() {
 
 export default async function AdminUsersPage() {
   const users = await getUsers();
+  console.log("DEBUG USERS:", users);
 
   return (
     <div className="p-6">

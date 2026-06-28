@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
 import CreatorCharts from "@/components/dashboard/CreatorCharts";
-import { getStats } from "@/lib/actions/stats";
+import { getCreatorStats } from "@/lib/actions/stats";
 
 import {
   Users,
@@ -22,12 +22,13 @@ export default function CreatorHomePage() {
   const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
+    if (!session?.user?.email) return;
+
     const fetchStats = async () => {
       try {
-        const data = await getStats();
+        const data = await getCreatorStats(session.user.email);
         setStats(data);
-        
-  console.log(data);
+        console.log(data);
       } catch (error) {
         console.error("Failed to load stats:", error);
       } finally {
@@ -36,7 +37,7 @@ export default function CreatorHomePage() {
     };
 
     fetchStats();
-  }, []);
+  }, [session]);
   
   if (isPending || loadingStats) {
     return (
@@ -111,7 +112,7 @@ export default function CreatorHomePage() {
       </div>
 
       {/* Charts */}
-      {stats && <AdminCharts stats={stats} />}
+      {stats && <CreatorCharts stats={stats} />}
     </div>
   );
 }

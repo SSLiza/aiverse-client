@@ -89,7 +89,7 @@ const CreatePrompt = async () => {
           </p>
 
           <Link
-            href="/payment"
+            href="/payment?redirect=/dashboard/user/my-prompts/create-prompt"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium shadow-md hover:shadow-lg transition-all duration-200"
           >
             🚀 Upgrade Plan

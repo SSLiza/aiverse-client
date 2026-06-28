@@ -1,9 +1,8 @@
 'use server'
 import { serverFetch } from "@/lib/server-fetch";
 
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL
-
 export const createPremium = async (premiumInfo) => {
+    const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
     try {
         const res = await serverFetch(`${baseURL}/premiums`, {
             method: "POST",

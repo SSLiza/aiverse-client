@@ -142,39 +142,55 @@ export default function PromptActions({
 
   return (
     <>
-      <div className="mb-8 flex flex-wrap gap-4">
-        <Button
-          color="primary"
-          variant={isBookmarked ? "solid" : "bordered"}
-          onPress={handleBookmark}
-          className="rounded-xl font-semibold"
-        >
-          {isBookmarked ? "⭐ Bookmarked" : "☆ Bookmark"}
-        </Button>
-
+      <div className="flex flex-col gap-3 w-full">
+        {/* Copy Prompt Button */}
         <Button
           color="secondary"
           onPress={handleCopy}
-          className="rounded-xl font-semibold"
+          className="w-full py-6 text-sm font-bold rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-650 hover:opacity-95 text-white transition shadow-md shadow-violet-500/10 cursor-pointer disabled:opacity-50"
           isDisabled={isLocked}
         >
-          📋 Copy Prompt
+          📋 {isLocked ? "Copy Prompt (Locked)" : "Copy Prompt"}
         </Button>
 
+        {/* Review Button (only if unlocked) */}
         {!isLocked && (
-          <Button color="success" className="rounded-xl font-semibold text-white">
-            ✍️ Review Below
+          <Button
+            color="success"
+            onPress={() => {
+              const el = document.getElementById("reviews-section");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="w-full py-6 text-sm font-bold rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white transition cursor-pointer"
+          >
+            ✍️ Write a Review
           </Button>
         )}
 
-        <Button
-          color="danger"
-          variant="flat"
-          onPress={handleReport}
-          className="rounded-xl font-semibold"
-        >
-          🚩 Report
-        </Button>
+        {/* Bookmark & Report Group */}
+        <div className="grid grid-cols-2 gap-3 w-full">
+          <Button
+            color="primary"
+            variant={isBookmarked ? "solid" : "bordered"}
+            onPress={handleBookmark}
+            className={`w-full py-5 text-xs font-bold rounded-xl cursor-pointer ${
+              isBookmarked
+                ? "bg-violet-600 text-white"
+                : "border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900"
+            }`}
+          >
+            {isBookmarked ? "⭐ Bookmarked" : "☆ Bookmark"}
+          </Button>
+
+          <Button
+            color="danger"
+            variant="flat"
+            onPress={handleReport}
+            className="w-full py-5 text-xs font-bold rounded-xl bg-red-100/50 dark:bg-red-950/20 text-red-650 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/40 cursor-pointer"
+          >
+            🚩 Report
+          </Button>
+        </div>
       </div>
 
       {/* Report Modal */}

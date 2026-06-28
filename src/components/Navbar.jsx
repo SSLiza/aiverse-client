@@ -53,20 +53,20 @@ export default function Navbar() {
         { name: "All Prompts", href: "/all-prompts" },
     ];
 
-   const dashboardLinks = {
-    creator: "/dashboard/creator",
-    user: "/dashboard/user",
-    admin: "/dashboard/admin",
-};
+    const dashboardLinks = {
+        creator: "/dashboard/creator",
+        user: "/dashboard/user",
+        admin: "/dashboard/admin",
+    };
     if (user?.email) {
-    navLinks.push({
-        name: "Dashboard",
-        href: dashboardLinks[user.role] || "/dashboard/user",
-    });
-}
+        navLinks.push({
+            name: "Dashboard",
+            href: dashboardLinks[user.role] || "/dashboard/user",
+        });
+    }
 
     const isActive = (href) => {
-        if (href === "/") return pathname === "/";
+        if (href === "/" || href === "/all-prompts") return pathname === href;
         return pathname.startsWith(href);
     };
 
@@ -79,7 +79,7 @@ export default function Navbar() {
     return (
         <header className="sticky top-0 z-50 border-b border-slate-200 bg-slate-50/90 backdrop-blur-md transition-colors duration-300 dark:border-slate-800 dark:bg-slate-950/90">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 lg:px-8">
-                
+
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 text-white font-bold">
@@ -87,7 +87,7 @@ export default function Navbar() {
                     </div>
 
                     <h1 className="text-xl font-bold">
-                        Ai<span className="text-violet-500">VERSE</span>
+                        AI<span className="text-violet-500">VERSE</span>
                     </h1>
                 </Link>
 
@@ -97,11 +97,10 @@ export default function Navbar() {
                         <Link
                             key={link.name}
                             href={link.href}
-                            className={`pb-1 border-b-2 transition-colors duration-200 ${
-                                isActive(link.href)
+                            className={`pb-1 border-b-2 transition-colors duration-200 ${isActive(link.href)
                                     ? "border-violet-500 text-violet-500"
                                     : "border-transparent text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white"
-                            }`}
+                                }`}
                         >
                             {link.name}
                         </Link>
@@ -164,6 +163,10 @@ export default function Navbar() {
                                 key={link.name}
                                 href={link.href}
                                 onClick={() => setIsOpen(false)}
+                                className={`text-base font-semibold transition-colors ${isActive(link.href)
+                                        ? "text-violet-500"
+                                        : "text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white"
+                                    }`}
                             >
                                 {link.name}
                             </Link>

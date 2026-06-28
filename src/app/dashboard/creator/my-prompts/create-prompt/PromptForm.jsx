@@ -144,7 +144,7 @@ placeholder:text-default-400
             creatorName: session?.user?.name,
             copyCount: 0,
             status: "pending",
-            createdAt: new Date(),
+            createdAt: new Date().toISOString(),
         };
 
         try {
