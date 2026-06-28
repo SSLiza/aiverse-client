@@ -40,7 +40,7 @@ export default function Footer() {
               </li>
 
               <li>
-                <Link href="/prompts" className="text-slate-600 hover:text-violet-500 dark:text-slate-400">
+                <Link href="/all-prompts" className="text-slate-600 hover:text-violet-500 dark:text-slate-400">
                   All Prompts
                 </Link>
               </li>

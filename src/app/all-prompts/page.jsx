@@ -21,6 +21,23 @@ const AllPromtPage = () => {
   });
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchVal = urlParams.get("search") || "";
+      const catVal = urlParams.get("category") || "";
+      const toolVal = urlParams.get("aiTool") || "";
+      if (searchVal || catVal || toolVal) {
+        setFilters((prev) => ({
+          ...prev,
+          search: searchVal || prev.search,
+          category: catVal || prev.category,
+          aiTool: toolVal || prev.aiTool,
+        }));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchPrompts = async () => {
       try {
         setLoading(true);

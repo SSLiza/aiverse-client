@@ -84,7 +84,7 @@ export default function Banner() {
           {/* CTA Buttons */}
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
-              href="/prompts"
+              href="/all-prompts"
               className="rounded-xl bg-violet-600 px-6 py-3 font-medium text-white hover:bg-violet-700"
             >
               Explore Prompts

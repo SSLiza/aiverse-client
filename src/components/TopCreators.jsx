@@ -120,10 +120,10 @@ export default function TopCreators() {
                   </span>
 
                   <Link
-                    href={`/profile/${creator._id}`}
+                    href={`/all-prompts?search=${encodeURIComponent(creator.name || creator.email)}`}
                     className="text-primary text-sm font-medium"
                   >
-                    View Profile →
+                    View Prompts →
                   </Link>
                 </div>
               </div>
