@@ -74,6 +74,9 @@ const PromptCard = ({ prompt }) => {
             <span className={`px-2.5 py-1 text-[10px] font-bold tracking-wider rounded-md border uppercase ${getToolBadgeStyle(prompt.aiTool)}`}>
               {prompt.aiTool}
             </span>
+            <span className="px-2.5 py-1 text-[10px] font-bold tracking-wider rounded-md border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 text-slate-500 dark:text-slate-400 uppercase">
+              {prompt.category}
+            </span>
             <span className={`px-2.5 py-1 text-[10px] font-bold tracking-wider rounded-md border uppercase ${getDifficultyBadgeStyle(prompt.difficulty || "Beginner")}`}>
               {prompt.difficulty || "Beginner"}
             </span>
