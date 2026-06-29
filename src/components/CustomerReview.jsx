@@ -20,17 +20,23 @@ export default function CustomerReviews() {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/customer-reviews?page=${page}&limit=${limit}`
         );
+        if (!res.ok) {
+          throw new Error(`Failed to fetch reviews: backend status ${res.status}`);
+        }
         const data = await res.json();
         
-        const reviewsData = Array.isArray(data) ? data : (data.data || []);
-        const totalP = data.totalPages || 1;
-        const totalC = data.totalCount || reviewsData.length;
+        const reviewsData = Array.isArray(data) ? data : (data?.data || []);
+        const totalP = data?.totalPages || 1;
+        const totalC = data?.totalCount || reviewsData.length;
 
         setReviews(reviewsData);
         setTotalPages(totalP);
         setTotalCount(totalC);
       } catch (err) {
         console.error("Failed to fetch customer reviews:", err);
+        setReviews([]);
+        setTotalPages(1);
+        setTotalCount(0);
       } finally {
         setLoading(false);
       }

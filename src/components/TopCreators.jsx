@@ -19,15 +19,18 @@ export default function TopCreators() {
       setLoading(true);
       try {
         const result = await getTopCreators(page, limit);
-        const creatorsData = Array.isArray(result) ? result : (result.data || []);
-        const totalP = result.totalPages || 1;
-        const totalC = result.totalCount || creatorsData.length;
+        const creatorsData = Array.isArray(result) ? result : (result?.data || []);
+        const totalP = result?.totalPages || 1;
+        const totalC = result?.totalCount || creatorsData.length;
 
         setCreators(creatorsData);
         setTotalPages(totalP);
         setTotalCount(totalC);
       } catch (err) {
         console.error("Failed to load top creators:", err);
+        setCreators([]);
+        setTotalPages(1);
+        setTotalCount(0);
       } finally {
         setLoading(false);
       }

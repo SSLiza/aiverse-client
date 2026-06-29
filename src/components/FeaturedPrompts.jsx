@@ -10,8 +10,15 @@ export default function FeaturedPrompts() {
 
     useEffect(() => {
         fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/featured-prompts`)
-            .then((res) => res.json())
-            .then((data) => setPrompts(data));
+            .then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch featured prompts");
+                return res.json();
+            })
+            .then((data) => setPrompts(Array.isArray(data) ? data : []))
+            .catch((err) => {
+                console.error("Error loading featured prompts:", err);
+                setPrompts([]);
+            });
     }, []);
 
     return (
