@@ -6,7 +6,8 @@ import { Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 
 export default function UsersTable({ users }) {
-  const [allUsers, setAllUsers] = useState(users || []);
+  const usersArray = Array.isArray(users) ? users : (users && Array.isArray(users.data) ? users.data : []);
+  const [allUsers, setAllUsers] = useState(usersArray);
   const [loadingRoleId, setLoadingRoleId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [deleteUserId, setDeleteUserId] = useState(null);

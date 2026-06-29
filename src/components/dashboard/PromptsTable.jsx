@@ -20,7 +20,8 @@ import {
 import { toast } from "react-toastify";
 
 export default function PromptsTable({ prompts }) {
-  const [allPrompts, setAllPrompts] = useState(prompts || []);
+  const promptsArray = Array.isArray(prompts) ? prompts : (prompts && Array.isArray(prompts.data) ? prompts.data : []);
+  const [allPrompts, setAllPrompts] = useState(promptsArray);
   const [viewPrompt, setViewPrompt] = useState(null);
 
   const [selectedPrompt, setSelectedPrompt] =

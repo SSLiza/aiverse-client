@@ -48,9 +48,11 @@ export default function MyPromptsPage() {
     const fetchPrompts = async () => {
       try {
         const data = await getMyPrompts(creatorId);
-        setPrompts(data);
+        const promptsArray = Array.isArray(data) ? data : (data && Array.isArray(data.data) ? data.data : []);
+        setPrompts(promptsArray);
       } catch (error) {
         console.error(error);
+        setPrompts([]);
       } finally {
         setLoading(false);
       }

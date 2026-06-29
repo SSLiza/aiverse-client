@@ -9,6 +9,10 @@ async function getReports() {
     }
   );
 
+  if (!res.ok) {
+    throw new Error("Failed to fetch reports");
+  }
+
   return res.json();
 }
 

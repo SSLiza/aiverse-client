@@ -22,11 +22,16 @@ export default function SavedPromptsPage() {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/bookmarks/user/${session.user.email}`
       );
+      if (!res.ok) {
+        throw new Error("Failed to fetch saved prompts");
+      }
       const data = await res.json();
-      setPrompts(data || []);
+      const promptsArray = Array.isArray(data) ? data : (data && Array.isArray(data.data) ? data.data : []);
+      setPrompts(promptsArray);
     } catch (error) {
       console.error(error);
       toast.error("Failed to load saved prompts");
+      setPrompts([]);
     } finally {
       setLoading(false);
     }

@@ -7,6 +7,10 @@ async function getUsers() {
     { cache: "no-store" }
   );
 
+  if (!res.ok) {
+    throw new Error("Failed to fetch users");
+  }
+
   return res.json();
 }
 

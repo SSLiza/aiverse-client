@@ -19,11 +19,16 @@ export default function MyReviewsPage() {
     if (!session?.user?.email) return;
     try {
       const res = await fetch(`${apiBaseUrl}/reviews/user/${session.user.email}`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch reviews");
+      }
       const data = await res.json();
-      setReviews(data || []);
+      const reviewsArray = Array.isArray(data) ? data : (data && Array.isArray(data.data) ? data.data : []);
+      setReviews(reviewsArray);
     } catch (error) {
       console.error(error);
       toast.error("Failed to load your reviews");
+      setReviews([]);
     } finally {
       setLoading(false);
     }

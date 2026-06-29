@@ -13,7 +13,8 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 export default function ReportsList({ reports }) {
-  const [allReports, setAllReports] = useState(reports);
+  const reportsArray = Array.isArray(reports) ? reports : (reports && Array.isArray(reports.data) ? reports.data : []);
+  const [allReports, setAllReports] = useState(reportsArray);
   const [dismissId, setDismissId] = useState(null);
   const [removeId, setRemoveId] = useState(null);
   const [loadingId, setLoadingId] = useState(null);

@@ -7,6 +7,7 @@ import TopCreators from "@/components/TopCreators";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import AiToolsShowcase from "@/components/AiToolsShowcase";
 import CommunitySection from "@/components/CommunitySection";
+import ReviewSection from "@/components/ReviewSection";
 
 export default function Home() {
   return (

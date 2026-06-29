@@ -7,6 +7,10 @@ async function getPrompts() {
     { cache: "no-store" }
   );
 
+  if (!res.ok) {
+    throw new Error("Failed to fetch prompts");
+  }
+
   return res.json();
 }
 
