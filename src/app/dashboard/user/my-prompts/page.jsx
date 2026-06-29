@@ -182,13 +182,12 @@ export default function MyPromptsPage() {
 
                     <td className="p-4">
                       <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          prompt.status === "approved"
-                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                            : prompt.status === "pending"
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${prompt.status === "approved"
+                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                          : prompt.status === "pending"
                             ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
                             : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                        }`}
+                          }`}
                       >
                         {prompt.status}
                       </span>
@@ -212,7 +211,7 @@ export default function MyPromptsPage() {
 
                         <button
                           onClick={() => setDeletePromptId(prompt._id)}
-                          className="rounded-lg bg-red-650 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600 active:bg-red-750 transition shadow-sm hover:shadow cursor-pointer"
+                          className="rounded-lg px-4 py-2 text-sm border border-red-600 text-red-600 font-semibold active:bg-red-750 transition cursor-pointer"
                         >
                           Delete
                         </button>
@@ -258,13 +257,12 @@ export default function MyPromptsPage() {
                     </span>
 
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        prompt.status === "approved"
-                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                          : prompt.status === "pending"
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${prompt.status === "approved"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                        : prompt.status === "pending"
                           ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
                           : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                      }`}
+                        }`}
                     >
                       {prompt.status}
                     </span>
@@ -473,7 +471,7 @@ export default function MyPromptsPage() {
                 type="button"
                 disabled={submittingDelete}
                 onClick={handleDeleteConfirm}
-                className="rounded-xl bg-red-650 hover:bg-red-600 active:bg-red-750 px-4 py-2.5 text-sm font-semibold text-white transition disabled:opacity-50 cursor-pointer"
+                className="rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 px-4 py-2.5 text-sm font-semibold transition disabled:opacity-50 cursor-pointer"
               >
                 {submittingDelete ? "Deleting..." : "Confirm Delete"}
               </button>
@@ -533,13 +531,12 @@ export default function MyPromptsPage() {
                   <span className="text-xs text-default-400 uppercase tracking-wider font-bold">Status</span>
                   <div className="mt-3">
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider ${
-                        selectedAnalyticsPrompt.status === "approved"
-                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                          : selectedAnalyticsPrompt.status === "pending"
+                      className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider ${selectedAnalyticsPrompt.status === "approved"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                        : selectedAnalyticsPrompt.status === "pending"
                           ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
                           : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                      }`}
+                        }`}
                     >
                       {selectedAnalyticsPrompt.status}
                     </span>

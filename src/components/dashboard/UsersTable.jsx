@@ -9,6 +9,7 @@ export default function UsersTable({ users }) {
   const [allUsers, setAllUsers] = useState(users || []);
   const [loadingRoleId, setLoadingRoleId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [deleteUserId, setDeleteUserId] = useState(null);
 
   const updateRole = async (id, role) => {
     setLoadingRoleId(id);
@@ -46,13 +47,7 @@ export default function UsersTable({ users }) {
     }
   };
 
-  const deleteUser = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this user?"
-    );
-
-    if (!confirmDelete) return;
-
+  const confirmDeleteUser = async (id) => {
     setDeletingId(id);
 
     try {
@@ -74,6 +69,7 @@ export default function UsersTable({ users }) {
       );
 
       toast.success("User deleted successfully");
+      setDeleteUserId(null);
     } catch (error) {
       console.error(error);
       toast.error(error.message);
@@ -194,7 +190,7 @@ export default function UsersTable({ users }) {
                 className="text-red-600 hover:bg-red-100"
                 isLoading={deletingId === user._id}
                 onPress={() =>
-                  deleteUser(user._id)
+                  setDeleteUserId(user._id)
                 }
                 startContent={
                   deletingId !== user._id && (
@@ -335,7 +331,7 @@ export default function UsersTable({ users }) {
                         deletingId === user._id
                       }
                       onPress={() =>
-                        deleteUser(user._id)
+                        setDeleteUserId(user._id)
                       }
                     >
                       {deletingId !==
@@ -350,6 +346,44 @@ export default function UsersTable({ users }) {
           </tbody>
         </table>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteUserId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="w-full max-w-sm rounded-2xl border border-default-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-6 shadow-2xl space-y-4">
+            <div className="flex items-center gap-3 text-red-655 dark:text-red-500">
+              <div className="p-2.5 rounded-xl bg-red-50 dark:bg-red-950/30">
+                <Trash2 size={22} className="flex-shrink-0" />
+              </div>
+              <h3 className="text-lg font-bold text-foreground">Delete User</h3>
+            </div>
+
+            <p className="text-sm text-default-500 leading-relaxed">
+              Are you sure you want to delete this user? This action is permanent and cannot be undone.
+            </p>
+
+            <div className="flex justify-end gap-3 pt-3">
+              <button
+                type="button"
+                disabled={deletingId !== null}
+                onClick={() => setDeleteUserId(null)}
+                className="rounded-xl border border-default-200 dark:border-zinc-800 px-4 py-2.5 text-sm font-semibold hover:bg-default-50 dark:hover:bg-zinc-900 transition text-foreground cursor-pointer disabled:opacity-50"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                disabled={deletingId !== null}
+                onClick={() => confirmDeleteUser(deleteUserId)}
+                className="rounded-xl bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 text-sm font-semibold transition disabled:opacity-50 cursor-pointer flex items-center gap-2"
+              >
+                {deletingId !== null ? "Deleting..." : "Confirm Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

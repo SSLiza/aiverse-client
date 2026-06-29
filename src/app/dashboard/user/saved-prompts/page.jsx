@@ -6,11 +6,14 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 import { Button, Card, Chip } from "@heroui/react";
 import LoadingPage from "@/components/LoadingPage";
+import { Trash2 } from "lucide-react";
 
 export default function SavedPromptsPage() {
   const { data: session, isPending } = useSession();
   const [prompts, setPrompts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deletePromptId, setDeletePromptId] = useState(null);
+  const [submittingDelete, setSubmittingDelete] = useState(false);
 
   const fetchSavedPrompts = async () => {
     if (!session?.user?.email) return;
@@ -35,7 +38,8 @@ export default function SavedPromptsPage() {
     }
   }, [session]);
 
-  const handleRemoveBookmark = async (promptId) => {
+  const confirmRemoveBookmark = async (promptId) => {
+    setSubmittingDelete(true);
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/bookmarks/toggle`,
@@ -53,9 +57,12 @@ export default function SavedPromptsPage() {
       if (res.ok) {
         toast.success("Bookmark removed");
         setPrompts((prev) => prev.filter((p) => p._id !== promptId));
+        setDeletePromptId(null);
       }
     } catch (error) {
       toast.error("Failed to remove bookmark");
+    } finally {
+      setSubmittingDelete(false);
     }
   };
 
@@ -115,13 +122,51 @@ export default function SavedPromptsPage() {
                   color="danger"
                   variant="flat"
                   className="font-semibold rounded-xl hover:bg-red-50"
-                  onPress={() => handleRemoveBookmark(prompt._id)}
+                  onPress={() => setDeletePromptId(prompt._id)}
                 >
                   Remove
                 </Button>
               </div>
             </Card>
           ))}
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deletePromptId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="w-full max-w-sm rounded-2xl border border-default-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-6 shadow-2xl space-y-4">
+            <div className="flex items-center gap-3 text-red-655 dark:text-red-500">
+              <div className="p-2.5 rounded-xl bg-red-50 dark:bg-red-950/30">
+                <Trash2 size={22} className="flex-shrink-0" />
+              </div>
+              <h3 className="text-lg font-bold text-foreground">Remove Bookmark</h3>
+            </div>
+
+            <p className="text-sm text-default-500 leading-relaxed">
+              Are you sure you want to remove this bookmark?
+            </p>
+
+            <div className="flex justify-end gap-3 pt-3">
+              <button
+                type="button"
+                disabled={submittingDelete}
+                onClick={() => setDeletePromptId(null)}
+                className="rounded-xl border border-default-200 dark:border-zinc-800 px-4 py-2.5 text-sm font-semibold hover:bg-default-50 dark:hover:bg-zinc-900 transition text-foreground cursor-pointer disabled:opacity-50"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                disabled={submittingDelete}
+                onClick={() => confirmRemoveBookmark(deletePromptId)}
+                className="rounded-xl bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 text-sm font-semibold transition disabled:opacity-50 cursor-pointer flex items-center gap-2"
+              >
+                {submittingDelete ? "Removing..." : "Confirm Remove"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

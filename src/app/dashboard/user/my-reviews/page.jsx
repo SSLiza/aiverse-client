@@ -10,6 +10,8 @@ import LoadingPage from "@/components/LoadingPage";
 export default function MyReviewsPage() {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleteReviewId, setDeleteReviewId] = useState(null);
+  const [submittingDelete, setSubmittingDelete] = useState(false);
   const { data: session } = useSession();
   const apiBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
 
@@ -33,8 +35,8 @@ export default function MyReviewsPage() {
     }
   }, [session, apiBaseUrl]);
 
-  const handleDeleteReview = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this review?")) return;
+  const confirmDeleteReview = async (id) => {
+    setSubmittingDelete(true);
 
     try {
       const res = await fetch(`${apiBaseUrl}/reviews/${id}`, {
@@ -43,12 +45,15 @@ export default function MyReviewsPage() {
       if (res.ok) {
         toast.success("Review deleted successfully!");
         setReviews((prev) => prev.filter((r) => r._id !== id));
+        setDeleteReviewId(null);
       } else {
         toast.error("Failed to delete review");
       }
     } catch (error) {
       console.error(error);
       toast.error("Failed to delete review");
+    } finally {
+      setSubmittingDelete(false);
     }
   };
 
@@ -132,7 +137,7 @@ export default function MyReviewsPage() {
                 </Link>
 
                 <button
-                  onClick={() => handleDeleteReview(review._id)}
+                  onClick={() => setDeleteReviewId(review._id)}
                   className="rounded-lg border border-red-200 dark:border-red-950/40 px-3 py-1.5 text-xs font-bold text-red-655 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition flex items-center gap-1 cursor-pointer"
                 >
                   <Trash2 size={13} /> Delete Review
@@ -140,6 +145,44 @@ export default function MyReviewsPage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteReviewId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="w-full max-w-sm rounded-2xl border border-default-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-6 shadow-2xl space-y-4">
+            <div className="flex items-center gap-3 text-red-655 dark:text-red-500">
+              <div className="p-2.5 rounded-xl bg-red-50 dark:bg-red-950/30">
+                <Trash2 size={22} className="flex-shrink-0" />
+              </div>
+              <h3 className="text-lg font-bold text-foreground">Delete Review</h3>
+            </div>
+
+            <p className="text-sm text-default-500 leading-relaxed">
+              Are you sure you want to delete this review? This action is permanent and cannot be undone.
+            </p>
+
+            <div className="flex justify-end gap-3 pt-3">
+              <button
+                type="button"
+                disabled={submittingDelete}
+                onClick={() => setDeleteReviewId(null)}
+                className="rounded-xl border border-default-200 dark:border-zinc-800 px-4 py-2.5 text-sm font-semibold hover:bg-default-50 dark:hover:bg-zinc-900 transition text-foreground cursor-pointer disabled:opacity-50"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                disabled={submittingDelete}
+                onClick={() => confirmDeleteReview(deleteReviewId)}
+                className="rounded-xl bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 text-sm font-semibold transition disabled:opacity-50 cursor-pointer flex items-center gap-2"
+              >
+                {submittingDelete ? "Deleting..." : "Confirm Delete"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

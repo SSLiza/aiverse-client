@@ -182,10 +182,10 @@ export default function MyPromptsPage() {
                     <td className="p-4">
                       <span
                         className={`rounded-full px-3 py-1 text-xs font-semibold ${prompt.status === "approved"
-                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                            : prompt.status === "pending"
-                              ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                              : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                          : prompt.status === "pending"
+                            ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                            : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
                           }`}
                       >
                         {prompt.status}
@@ -203,7 +203,7 @@ export default function MyPromptsPage() {
 
                         <button
                           onClick={() => setDeletePromptId(prompt._id)}
-                          className="rounded-lg bg-red-650 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600 active:bg-red-750 transition shadow-sm hover:shadow cursor-pointer"
+                          className="rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 px-4 py-2 text-sm font-semibold transition shadow-sm hover:shadow cursor-pointer"
                         >
                           Delete
                         </button>
@@ -250,10 +250,10 @@ export default function MyPromptsPage() {
 
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-semibold ${prompt.status === "approved"
-                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                          : prompt.status === "pending"
-                            ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                            : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                        : prompt.status === "pending"
+                          ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                          : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
                         }`}
                     >
                       {prompt.status}
@@ -270,7 +270,7 @@ export default function MyPromptsPage() {
 
                     <button
                       onClick={() => setDeletePromptId(prompt._id)}
-                      className="flex-1 rounded-lg bg-red-650 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600 transition cursor-pointer text-center"
+                      className="flex-1 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 px-4 py-2 text-sm font-semibold transition cursor-pointer text-center"
                     >
                       Delete
                     </button>
@@ -447,7 +447,7 @@ export default function MyPromptsPage() {
               <button
                 type="button"
                 onClick={() => setDeletePromptId(null)}
-                className="rounded-xl border border-default-200 dark:border-zinc-800 px-4 py-2.5 text-sm font-semibold hover:bg-default-50 dark:hover:bg-zinc-900 transition text-foreground cursor-pointer"
+                className="rounded-xl border border-red-600 text-red-600 px-4 py-2.5 text-sm font-semibold hover:bg-default-50 dark:hover:bg-zinc-900 transition text-foreground cursor-pointer"
               >
                 Cancel
               </button>
@@ -456,7 +456,7 @@ export default function MyPromptsPage() {
                 type="button"
                 disabled={submittingDelete}
                 onClick={handleDeleteConfirm}
-                className="rounded-xl bg-red-650 hover:bg-red-600 active:bg-red-750 px-4 py-2.5 text-sm font-semibold text-white transition disabled:opacity-50 cursor-pointer"
+                className="rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 px-4 py-2.5 text-sm font-semibold"
               >
                 {submittingDelete ? "Deleting..." : "Confirm Delete"}
               </button>
