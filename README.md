@@ -1,119 +1,209 @@
 # 🌌 AIverse - AI Prompt Sharing & Marketplace Platform
 
-AIverse is a modern, premium AI prompt-sharing and marketplace platform designed to help developers, creators, and AI enthusiasts discover, share, bookmark, and manage optimized prompts for popular tools like ChatGPT, Claude, Gemini, and Midjourney. 
-
-The platform offers a role-based dashboard ecosystem, Stripe payment flows, moderation controls, and responsive UI themes to foster a community-driven prompt ecosystem.
+AIverse is a modern full-stack AI prompt marketplace where users can discover, share, bookmark, and manage AI prompts for tools like ChatGPT, Gemini, Claude, and Midjourney. The platform features role-based authentication, premium subscriptions, moderation workflows, analytics, and a responsive user interface.
 
 ---
 
-## 🚀 Live Links
-* **Frontend Application:** [AIverse Client](https://aiverse-client-six.vercel.app)
-* **Backend API Server:** [AIverse Server](https://aiverse-server-zeta.vercel.app)
+## 🔗 Live Links
+
+- 🌐 **Client:** https://aiverse-client-six.vercel.app
+- ⚙️ **Server:** https://aiverse-server-zeta.vercel.app
+- 💻 **Client Repository:** https://github.com/SSLiza/aiverse-client
+- 🖥️ **Server Repository:** https://github.com/SSLiza/aiverse-server
 
 ---
 
-## ✨ Key Features
+## 📸 Project Screenshot
 
-### 🔑 Authentication & Security
-* **Social & Credentials Login:** Powered by secure session handling and Google OAuth integration.
-* **Role-Based Routing:** Customized flows and middlewares for `USER`, `CREATOR`, and `ADMIN` members.
+<p align="center">
+  <img src="./public/screenshot.png" alt="AIverse Screenshot" width="100%">
+</p>
 
-### 💳 Monetization & Access
-* **Stripe Premium Upgrade:** One-time $5 checkout session to unlock premium access.
-* **Instant Activation:** Automatically updates subscription plans to `Premium` upon successful checkout.
-* **Access Control:** Automatically limits free users to a maximum of 3 prompt submissions.
-
-### 📝 Prompt Management
-* **Interactive Marketplace:** Advanced client-side search, category filtering, and sorting parameters.
-* **Submissions Pipeline:** Rich metadata fields including Thumbnail upload, AI Tool, Tags, and Difficulty Selector (Beginner, Intermediate, Pro).
-* **Review Moderation:** Submitted prompts remain `pending` until reviewed and approved/rejected by an administrator.
-
-### 🔖 Bookmarks & Interactive Reviews
-* **Bookmarks Dashboard:** Fast template bookmarking with immediate removal actions.
-* **User Review Engine:** Share ratings and reviews. Deleting a review triggers database aggregations to recalculate average ratings.
-
-### 📊 Modern Performance Analytics
-* **Interactive Charts:** Recharts analytics illustrating prompt copies, category distribution, and total reviews.
-* **Analytics Modal:** Quick performance statistics popup directly from the dashboard table.
-
-### 🌓 Responsive Aesthetics
-* **Theme Toggle:** Seamless light and dark mode transitions.
-* **Interactive Micro-animations:** Powered by Framer Motion for scroll-triggers, banner animations, and card layouts.
+> Replace the image above with a screenshot of your homepage or dashboard.
 
 ---
 
-## 🛠️ Technology Stack & NPM Packages
+## 🚀 Features
 
-### Frontend (Client-Side)
-* **Framework:** Next.js (App Router)
-* **Styling:** TailwindCSS, DaisyUI, HeroUI (NextUI)
-* **Animation:** Framer Motion
-* **Analytics:** Recharts
-* **State & Flow:** React Context, React Hook Form, Lucide Icons, React Toastify
-* **Payments:** Stripe JS SDK (`@stripe/react-stripe-js`, `@stripe/stripe-js`)
-
-### Backend (Server-Side)
-* **Runtime & Framework:** Node.js, Express
-* **Database:** MongoDB (Native Driver & Mongoose)
-* **Security:** JWT, Cors
-* **Integrations:** Stripe SDK (Checkout sessions & metadata mapping)
+- 🔐 Secure Authentication with Email/Password & Google Login
+- 👥 Role-Based Dashboard (User, Creator & Admin)
+- 💳 Stripe Premium Subscription System
+- 📝 AI Prompt Marketplace with Search, Filter & Sorting
+- 📌 Bookmark & Review System
+- ⭐ Dynamic Rating & Review Aggregation
+- 📊 Creator Analytics Dashboard with Recharts
+- 🛡️ Admin Prompt Moderation
+- 🌙 Light & Dark Theme Support
+- 📱 Fully Responsive Design
 
 ---
 
-## 💻 Local Setup & Installation
+## 🛠️ Tech Stack
 
-### 1. Clone the Workspace
-```bash
-git clone https://github.com/SSLiza/aiverse-client.git
-cd aiverse
-```
+### Frontend
 
-### 2. Configure Environment Variables
+- Next.js (App Router)
+- React
+- TypeScript
+- Tailwind CSS
+- HeroUI
+- DaisyUI
+- Framer Motion
+- Recharts
 
-#### Backend (`aiverse-server/.env`)
-Create a `.env` file in the server directory with:
+### Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- JWT Authentication
+- Stripe API
+
+---
+
+## 📦 Dependencies
+
+### Client
+
+- next
+- react
+- tailwindcss
+- heroui
+- daisyui
+- framer-motion
+- axios
+- react-hook-form
+- react-toastify
+- recharts
+- lucide-react
+- @stripe/react-stripe-js
+- @stripe/stripe-js
+
+### Server
+
+- express
+- mongodb
+- mongoose
+- jsonwebtoken
+- cors
+- dotenv
+- stripe
+
+---
+
+## ⚙️ Environment Variables
+
+### Server (.env)
+
 ```env
 PORT=5000
 DB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
+JWT_SECRET=your_jwt_secret
 STRIPE_SECRET_KEY=your_stripe_secret_key
 CLIENT_URL=http://localhost:3000
 ```
 
-#### Frontend (`aiverse-client/.env.local`)
-Create a `.env.local` file in the client directory with:
+### Client (.env.local)
+
 ```env
 NEXT_PUBLIC_BASE_URL=http://localhost:5000
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-NEXTAUTH_SECRET=your_nextauth_secret
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_publishable_key
 ```
 
-### 3. Run Locally
+---
 
-#### Run API Server:
+# 💻 Run Locally
+
+### 1️⃣ Clone the repositories
+
 ```bash
-cd aiverse-server
-npm install
-npm start # or nodemon index.js
+git clone https://github.com/SSLiza/aiverse-client.git
+git clone https://github.com/SSLiza/aiverse-server.git
 ```
 
-#### Run Frontend Client:
+---
+
+### 2️⃣ Install dependencies
+
+Client
+
 ```bash
 cd aiverse-client
 npm install
+```
+
+Server
+
+```bash
+cd aiverse-server
+npm install
+```
+
+---
+
+### 3️⃣ Configure Environment Variables
+
+Create the required `.env` and `.env.local` files using the examples above.
+
+---
+
+### 4️⃣ Start the Server
+
+```bash
+cd aiverse-server
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## 📌 Future Milestones
-* [ ] AI-assisted prompt optimization suggestions before listing.
-* [ ] Real-time browser notifications for prompt approval and bookmark updates.
-* [ ] Advanced exports for prompts (JSON, TXT, CSV formatting).
+### 5️⃣ Start the Client
+
+```bash
+cd aiverse-client
+npm run dev
+```
 
 ---
 
-## 👨‍💻 Developer
-* **Name:** Shajeda Sultana
-* **Email:** [shajedasultanaliza2002@gmail.com](mailto:shajedasultanaliza2002@gmail.com)
+### 6️⃣ Open the Application
+
+```
+http://localhost:3000
+```
+
+---
+
+## 📂 Project Structure
+
+```
+aiverse-client/
+aiverse-server/
+```
+
+---
+
+## 🎯 Future Improvements
+
+- 🤖 AI-powered prompt recommendations
+- 🔔 Real-time notifications
+- 📤 Export prompts as PDF, JSON & CSV
+- ❤️ Like & Follow creators
+- 💬 Real-time chat between creators and users
+
+---
+
+## 👩‍💻 Developer
+
+**Shajeda Sultana**
+
+📧 Email: shajedasultanaliza2002@gmail.com
+
+🔗 GitHub: https://github.com/SSLiza
+
+🔗 LinkedIn: https://linkedin.com/in/ssliza59
+
+---
+
+## ⭐ Support
+
+If you like this project, consider giving it a ⭐ on GitHub.
