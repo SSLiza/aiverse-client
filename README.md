@@ -192,18 +192,6 @@ aiverse-server/
 
 ---
 
-## 👩‍💻 Developer
-
-**Shajeda Sultana**
-
-📧 Email: shajedasultanaliza2002@gmail.com
-
-🔗 GitHub: https://github.com/SSLiza
-
-🔗 LinkedIn: https://linkedin.com/in/ssliza59
-
----
-
-## ⭐ Support
-
-If you like this project, consider giving it a ⭐ on GitHub.
+## 👨‍💻 Developer
+* **Name:** Shajeda Sultana
+* **Email:** [shajedasultanaliza2002@gmail.com](mailto:shajedasultanaliza2002@gmail.com)
