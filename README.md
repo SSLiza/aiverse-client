@@ -19,8 +19,6 @@ AIverse is a modern full-stack AI prompt marketplace where users can discover, s
   <img src="./public/screenshot.png" alt="AIverse Screenshot" width="100%">
 </p>
 
-> Replace the image above with a screenshot of your homepage or dashboard.
-
 ---
 
 ## 🚀 Features
